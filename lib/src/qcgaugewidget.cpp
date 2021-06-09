@@ -28,6 +28,7 @@
 
 
 
+#include <QStyleOption>
 #include "qcgaugewidget.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -135,7 +136,10 @@ QList<QcItem *> QcGaugeWidget::items()
 
 void QcGaugeWidget::paintEvent(QPaintEvent */*paintEvt*/)
 {
+    QStyleOption opt;
+    opt.init(this);
     QPainter painter(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
     painter.setRenderHint(QPainter::Antialiasing);
 
     foreach (QcItem * item, mItems) {
@@ -395,6 +399,7 @@ QcLabelItem::QcLabelItem(QObject *parent) :
     mAngle = 270;
     mText = "%";
     mColor = Qt::black;
+    mFont = "Arial";
 }
 
 void QcLabelItem::draw(QPainter *painter)
@@ -402,7 +407,7 @@ void QcLabelItem::draw(QPainter *painter)
     resetRect();
     QRectF tmpRect = adjustRect(position());
     float r = getRadius(rect());
-    QFont font("Meiryo UI", r/10.0, QFont::Bold);
+    QFont font(mFont, r/10.0, QFont::Bold);
     painter->setFont(font);
     painter->setPen(QPen(mColor));
 
@@ -448,6 +453,14 @@ void QcLabelItem::setColor(const QColor &color)
 QColor QcLabelItem::color()
 {
     return mColor;
+}
+
+void QcLabelItem::setFont(const QString &font) {
+    mFont = font;
+}
+
+QString QcLabelItem::font() {
+    return mFont;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -782,6 +795,7 @@ QcValuesItem::QcValuesItem(QObject *parent) :
     setPosition(70);
     mColor = Qt::black;
     mStep = 10;
+    mFont = "Arial";
 }
 
 
@@ -789,7 +803,7 @@ void QcValuesItem::draw(QPainter*painter)
 {
     QRectF  tmpRect = resetRect();
     float r = getRadius(adjustRect(99));
-    QFont font("Meiryo UI",0, QFont::Bold);
+    QFont font(mFont,0, QFont::Bold);
     font.setPointSizeF(0.08*r);
 
     painter->setFont(font);
@@ -816,11 +830,29 @@ void QcValuesItem::setStep(float step)
     mStep = step;
 }
 
+float QcValuesItem::step() {
+    return mStep;
+}
 
 void QcValuesItem::setColor(const QColor& color)
 {
     mColor = color;
 }
+
+QColor QcValuesItem::color() {
+    return mColor;
+}
+
+void QcValuesItem::setFont(const QString& font)
+{
+    mFont = font;
+}
+
+QString QcValuesItem::font() {
+    return mFont;
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
