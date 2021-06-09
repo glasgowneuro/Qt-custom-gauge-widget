@@ -201,11 +201,14 @@ public:
     QString text();
     void setColor(const QColor& color);
     QColor color();
+    void setFont(const QString &font);
+    QString font();
 
 private:
     float mAngle;
     QString mText;
     QColor mColor;
+    QString mFont;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -312,10 +315,15 @@ public:
     explicit QcValuesItem(QObject *parent = 0);
     void draw(QPainter*);
     void setStep(float step);
+    float step();
     void setColor(const QColor& color);
+    QColor color();
+    void setFont(const QString &font);
+    QString font();
 private:
     float mStep;
     QColor mColor;
+    QString mFont;
 };
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
