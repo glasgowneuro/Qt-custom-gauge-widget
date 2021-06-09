@@ -43,7 +43,7 @@ QcGaugeWidget::QcGaugeWidget(QWidget *parent) :
 
 QcBackgroundItem *QcGaugeWidget::addBackground(float position)
 {
-    QcBackgroundItem * item = new QcBackgroundItem(this);
+    auto item = new QcBackgroundItem(this);
     item->setPosition(position);
     mItems.append(item);
     return item;
@@ -51,7 +51,7 @@ QcBackgroundItem *QcGaugeWidget::addBackground(float position)
 
 QcDegreesItem *QcGaugeWidget::addDegrees(float position)
 {
-    QcDegreesItem * item = new QcDegreesItem(this);
+    auto item = new QcDegreesItem(this);
     item->setPosition(position);
 
     mItems.append(item);
@@ -69,7 +69,7 @@ QcValuesItem *QcGaugeWidget::addValues(float position)
 
 QcArcItem *QcGaugeWidget::addArc(float position)
 {
-    QcArcItem * item = new QcArcItem(this);
+    auto item = new QcArcItem(this);
     item->setPosition(position);
     mItems.append(item);
     return item;
@@ -77,7 +77,7 @@ QcArcItem *QcGaugeWidget::addArc(float position)
 
 QcColorBand *QcGaugeWidget::addColorBand(float position)
 {
-    QcColorBand * item = new QcColorBand(this);
+    auto item = new QcColorBand(this);
     item->setPosition(position);
     mItems.append(item);
     return item;
@@ -85,7 +85,7 @@ QcColorBand *QcGaugeWidget::addColorBand(float position)
 
 QcNeedleItem *QcGaugeWidget::addNeedle(float position)
 {
-    QcNeedleItem * item = new QcNeedleItem(this);
+    auto item = new QcNeedleItem(this);
     item->setPosition(position);
     mItems.append(item);
     return item;
@@ -93,7 +93,7 @@ QcNeedleItem *QcGaugeWidget::addNeedle(float position)
 
 QcLabelItem *QcGaugeWidget::addLabel(float position)
 {
-    QcLabelItem * item = new QcLabelItem(this);
+    auto item = new QcLabelItem(this);
     item->setPosition(position);
     mItems.append(item);
     return item;
@@ -101,7 +101,7 @@ QcLabelItem *QcGaugeWidget::addLabel(float position)
 
 QcGlassItem *QcGaugeWidget::addGlass(float position)
 {
-    QcGlassItem * item = new QcGlassItem(this);
+    auto item = new QcGlassItem(this);
     item->setPosition(position);
     mItems.append(item);
     return item;
@@ -109,7 +109,7 @@ QcGlassItem *QcGaugeWidget::addGlass(float position)
 
 QcAttitudeMeter *QcGaugeWidget::addAttitudeMeter(float position)
 {
-    QcAttitudeMeter * item = new QcAttitudeMeter(this);
+    auto item = new QcAttitudeMeter(this);
     item->setPosition(position);
     mItems.append(item);
     return item;
@@ -261,7 +261,7 @@ void QcScaleItem::setValueRange(float minValue, float maxValue)
 
 }
 
-void QcScaleItem::setDgereeRange(float minDegree, float maxDegree)
+void QcScaleItem::setDegreeRange(float minDegree, float maxDegree)
 {
     if(!(minDegree<maxDegree))
         throw( InvalidValueRange);
