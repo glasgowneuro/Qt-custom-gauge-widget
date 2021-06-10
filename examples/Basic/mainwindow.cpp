@@ -35,20 +35,46 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    // Create the gauge widget
     mAirspeedGauge = new QcGaugeWidget;
+
+    // Add a 225 degrees arc
     mAirspeedGauge->addArc(55);
+
+    // Add tics from 0 to 100 (by default one tic each 10) and set the range between 0 and 100
     mAirspeedGauge->addDegrees(65)->setValueRange(0,100);
-    QcColorBand *clrBand = mAirspeedGauge->addColorBand(50);
+
+    // Add a color band
+    auto clrBand = mAirspeedGauge->addColorBand(50);
+
+    // Set colors between 0 and 100
     clrBand->setValueRange(0,100);
+
+    // Add values and set the range between 0 and 100 (by default one each 10)
     mAirspeedGauge->addValues(80)->setValueRange(0,100);
+
+    // Add a label and set the text
     mAirspeedGauge->addLabel(70)->setText("Km/h");
-    QcLabelItem *lab = mAirspeedGauge->addLabel(40);
+
+    // Add a label (to be connected to the needle)
+    auto lab = mAirspeedGauge->addLabel(40);
+
+    // Set the label as 0
     lab->setText("0");
+
+    // Add a new needle
     mAirspeedNeedle = mAirspeedGauge->addNeedle(60);
+
+    // Assign the label to the needle
     mAirspeedNeedle->setLabel(lab);
+
+    // Set the needle color
     mAirspeedNeedle->setColor(Qt::blue);
+
+    // Set the needle values' range
     mAirspeedNeedle->setValueRange(0,100);
-    mAirspeedGauge->addBackground(7);
+
+    // Add the widget to the horizontalLayout
     ui->horizontalLayout->addWidget(mAirspeedGauge);
 
 }

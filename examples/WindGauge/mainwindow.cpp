@@ -36,6 +36,22 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     mWindGauge = new QcGaugeWidget;
+
+
+    /*
+    mWindGauge->addBackground(99);
+
+    QcBackgroundItem *bkg1 = mWindGauge->addBackground(92);
+    bkg1->clearrColors();
+    bkg1->addColor(0.1,Qt::black);
+    bkg1->addColor(1.0,Qt::white);
+
+    QcBackgroundItem *bkg2 = mWindGauge->addBackground(88);
+    bkg2->clearrColors();
+    bkg2->addColor(0.1,Qt::white);
+    bkg2->addColor(1.0,Qt::black);
+    */
+
     auto itemArc=mWindGauge->addArc(55);
     itemArc->setValueRange(-180,180);
     itemArc->setDegreeOffset(90);
@@ -88,7 +104,10 @@ MainWindow::MainWindow(QWidget *parent) :
     mWindNeedle->setDegreeOffset(90);
     mWindNeedle->setDegreeRange(-180,180);
 
-    mWindGauge->addBackground(7);
+    /*
+    mWindGauge->addGlass(88);
+    */
+
     ui->horizontalLayout->addWidget(mWindGauge);
 
 }
