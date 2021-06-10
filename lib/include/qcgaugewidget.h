@@ -145,7 +145,8 @@ signals:
 public slots:
 protected:
 
-    float getDegFromValue(float);
+    float getDegFromValue(float) const;
+    float getDegFromValue();
 
     float mMinValue;
     float mMaxValue;
@@ -250,7 +251,6 @@ private:
    QPainterPath createSubBand(float from,float sweep);
 
    QList<QPair<QColor,float> > mBandColors;
-   float mBandStartValue;
 };
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
