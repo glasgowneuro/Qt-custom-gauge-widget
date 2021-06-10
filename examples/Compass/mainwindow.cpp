@@ -77,9 +77,12 @@ MainWindow::MainWindow(QWidget *parent) :
     mCompassNeedle->setValueRange(0,360);
     mCompassNeedle->setMaxDegree(360);
     mCompassNeedle->setMinDegree(0);
+    mCompassNeedle->setDegreeOffset(90);
     mCompassGauge->addBackground(7);
     mCompassGauge->addGlass(88);
     ui->verticalLayout->addWidget(mCompassGauge);
+
+    mCompassNeedle->setCurrentValue(0);
 }
 
 MainWindow::~MainWindow()
