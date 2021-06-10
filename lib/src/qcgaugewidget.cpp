@@ -250,6 +250,7 @@ QcScaleItem::QcScaleItem(QObject *parent) :
     mMaxDegree = 225;
     mMinValue = 0;
     mMaxValue = 100;
+    mDegreeOffset = 0;
 }
 
 void QcScaleItem::setValueRange(float minValue, float maxValue)
@@ -273,7 +274,7 @@ float QcScaleItem::getDegFromValue(float v)
 {
     float a = (mMaxDegree-mMinDegree)/(mMaxValue-mMinValue);
     float b = -a*mMinValue+mMinDegree;
-    return a*v+b;
+    return mDegreeOffset+(a*v+b);
 }
 
 
@@ -301,11 +302,18 @@ void QcScaleItem::setMinDegree(float minDegree)
     mMinDegree = minDegree;
     update();
 }
+
 void QcScaleItem::setMaxDegree(float maxDegree)
 {
     if(maxDegree<mMinDegree)
         throw (InvalidDegreeRange);
     mMaxDegree = maxDegree;
+    update();
+}
+
+void QcScaleItem::setDegreeOffset(float degreeOffset)
+{
+    mDegreeOffset = degreeOffset;
     update();
 }
 

@@ -138,6 +138,7 @@ public:
     void setMaxValue(float maxValue);
     void setMinDegree(float minDegree);
     void setMaxDegree(float maxDegree);
+    void setDegreeOffset(float degreeOffset);
 
 signals:
 
@@ -150,6 +151,7 @@ protected:
     float mMaxValue;
     float mMinDegree;
     float mMaxDegree;
+    float mDegreeOffset;
 
 };
 ///////////////////////////////////////////////////////////////////////////////////////////
