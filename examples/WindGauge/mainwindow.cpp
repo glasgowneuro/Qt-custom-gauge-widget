@@ -41,15 +41,12 @@ MainWindow::MainWindow(QWidget *parent) :
     itemArc->setDegreeOffset(90);
     itemArc->setDegreeRange(-180,180);
 
-
     auto itemDegrees = mWindGauge->addDegrees(65);
     itemDegrees->setValueRange(-180,180);
     itemDegrees->setDegreeOffset(90);
     itemDegrees->setDegreeRange(-180,180);
     itemDegrees->setStep(10);
     itemDegrees->setSubDegree(true);
-
-
 
     QcColorBand *clrBandPort = mWindGauge->addColorBand(50);
     clrBandPort->setValueRange(-60,-20);
