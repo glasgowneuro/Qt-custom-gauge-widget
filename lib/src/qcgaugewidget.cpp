@@ -255,26 +255,31 @@ QcScaleItem::QcScaleItem(QObject *parent) :
 
 void QcScaleItem::setValueRange(float minValue, float maxValue)
 {
-    if(!(minValue<maxValue))
-        throw( InvalidValueRange);
-    mMinValue = minValue;
-    mMaxValue = maxValue;
+    if (minValue < maxValue) {
+        mMinValue = minValue;
+        mMaxValue = maxValue;
 
+    } else throw (InvalidValueRange);
 }
 
 void QcScaleItem::setDegreeRange(float minDegree, float maxDegree)
 {
-    if(!(minDegree<maxDegree))
-        throw( InvalidValueRange);
-    mMinDegree = minDegree;
-    mMaxDegree = maxDegree;
+    if (minDegree < maxDegree) {
+        mMinDegree = minDegree;
+        mMaxDegree = maxDegree;
+    } else throw (InvalidValueRange);
 }
 
-float QcScaleItem::getDegFromValue(float v)
+float QcScaleItem::getDegFromValue(float v) const
 {
     float a = (mMaxDegree-mMinDegree)/(mMaxValue-mMinValue);
     float b = -a*mMinValue+mMinDegree;
     return mDegreeOffset+(a*v+b);
+}
+
+float QcScaleItem::getDegFromValue()
+{
+    return getDegFromValue(mMinValue);
 }
 
 
@@ -542,10 +547,10 @@ void QcColorBand::draw(QPainter *painter)
     pen.setCapStyle(Qt::FlatCap);
     pen.setWidthF(r/20.0);
     painter->setBrush(Qt::NoBrush);
-    float offset = getDegFromValue(mBandStartValue);
+    float offset = getDegFromValue();
     for(int i = 0;i<mBandColors.size();i++){
         QColor clr = mBandColors[i].first;
-        float sweep;
+        float sweep=0;
         if(i==0)
             sweep = getDegFromValue(mBandColors[i].second)-getDegFromValue(mMinValue);
         else
