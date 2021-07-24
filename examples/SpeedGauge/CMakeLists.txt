@@ -11,14 +11,14 @@ find_package(Qt5 REQUIRED COMPONENTS
         Widgets
         )
 
-add_executable(speedgauge-example
+add_executable(SpeedGauge-example
         main.cpp
         mainwindow.h
         mainwindow.cpp
         mainwindow.ui
         )
 
-target_link_libraries(speedgauge-example
+target_link_libraries(SpeedGauge-example
         PRIVATE
         Qt5::Core
         Qt5::Gui

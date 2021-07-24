@@ -11,14 +11,14 @@ find_package(Qt5 REQUIRED COMPONENTS
         Widgets
         )
 
-add_executable(LcdGauge-example
+add_executable(BarGauge-example
         main.cpp
-        lcd.h
-        lcd.cpp
-        lcd.ui
+        bargauge.h
+        bargauge.ui
+        bargauge.cpp
         )
 
-target_link_libraries(LcdGauge-example
+target_link_libraries(BarGauge-example
         PRIVATE
         Qt5::Core
         Qt5::Gui

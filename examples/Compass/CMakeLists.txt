@@ -11,14 +11,14 @@ find_package(Qt5 REQUIRED COMPONENTS
         Widgets
         )
 
-add_executable(compass-example
+add_executable(Compass-example
         main.cpp
         mainwindow.h
         mainwindow.cpp
         mainwindow.ui
         )
 
-target_link_libraries(compass-example
+target_link_libraries(Compass-example
         PRIVATE
         Qt5::Core
         Qt5::Gui

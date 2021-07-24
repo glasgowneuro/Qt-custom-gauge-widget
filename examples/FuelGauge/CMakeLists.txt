@@ -11,14 +11,14 @@ find_package(Qt5 REQUIRED COMPONENTS
         Widgets
         )
 
-add_executable(fuelgauge-example
+add_executable(FuelGauge-example
         main.cpp
         mainwindow.h
         mainwindow.cpp
         mainwindow.ui
         )
 
-target_link_libraries(fuelgauge-example
+target_link_libraries(FuelGauge-example
         PRIVATE
         Qt5::Core
         Qt5::Gui

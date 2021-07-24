@@ -11,14 +11,14 @@ find_package(Qt5 REQUIRED COMPONENTS
         Widgets
         )
 
-add_executable(windgauge-example
+add_executable(WindGauge-example
         main.cpp
         mainwindow.h
         mainwindow.cpp
         mainwindow.ui
         )
 
-target_link_libraries(windgauge-example
+target_link_libraries(WindGauge-example
         PRIVATE
         Qt5::Core
         Qt5::Gui
