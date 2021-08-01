@@ -23,5 +23,4 @@ target_link_libraries(BarGauge-example
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
-        QcGaugeWidget
         )

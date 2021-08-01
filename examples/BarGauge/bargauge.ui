@@ -13,11 +13,12 @@
   <property name="windowTitle">
    <string>BarGauge</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QWidget" name="widget" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout_2"/>
-    </widget>
+    <widget class="QWidget" name="widget" native="true"/>
    </item>
    <item>
     <widget class="QSlider" name="verticalSlider">
