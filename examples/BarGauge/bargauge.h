@@ -66,7 +66,6 @@ private:
     bool reverse; //regression
     double currentValue; //current value
     QTimer *timer; //Timer draw animation
-    QProgressBar* m_prgbar;
 
 private slots:
     void valueChangeSlot(int value);

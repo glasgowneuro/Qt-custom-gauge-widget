@@ -10,8 +10,6 @@
 
 BarGauge::BarGauge(QWidget *parent) :QWidget(parent), ui(new Ui::BarGauge)
 {
-
-    //m_prgbar = new QProgressBar(this);
     setBgColor(QColor("White"));
     setProgressColor(QColor("Green"));
     setLineColor(QColor("DarkRed"));
@@ -28,7 +26,7 @@ BarGauge::BarGauge(QWidget *parent) :QWidget(parent), ui(new Ui::BarGauge)
 }
 
 BarGauge::~BarGauge() {
-    delete m_prgbar;
+    delete ui;
 }
 void BarGauge::valueChangeSlot(int value)
 {
