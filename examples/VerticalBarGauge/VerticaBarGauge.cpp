@@ -12,15 +12,16 @@
 VerticalBarGauge::VerticalBarGauge(QWidget *parent) :
         QWidget(parent), ui(new Ui::VerticalBarGauge) {
 
-    setBgColor(QColor("White"));
-    setProgressColor(QColor("Green"));
-    setLineColor(QColor("DarkRed"));
+    setBgColor(Qt::darkGray);
+    setProgressColor(Qt::darkBlue);
+    setLineColor(Qt::white);
     setRange(1,100);
     setAnimation(true);
     setPrecision(1);
     setShortStep(1);
     setLongStep(10);
     setRulerLeft(true);
+    setRulerRight(true);
     ui->setupUi(this);
 
     connect(ui->verticalSlider, &QSlider::valueChanged, this, &VerticalBarGauge::valueChangeSlot);
@@ -83,16 +84,12 @@ void VerticalBarGauge::drawRulerLeft(QPainter *painter)
     painter->setPen(_lineColor);
 
     double x = 0;
-
-    // draw a part of the bottom line on the horizontal ruler
     double y = height();
 
     QPointF lineTopLeftPot = QPointF(x, y);
     QPointF lineBottomLeftPot = QPointF(x, y+height());
     painter->drawLine(lineBottomLeftPot,lineTopLeftPot);
 
-
-    // draw the upper part and the lower part of the horizontal ruler scale
     double length = height();
     // Calculate how much each cell moves
     double increment = length / (_maxValue - _minValue);
@@ -100,7 +97,7 @@ void VerticalBarGauge::drawRulerLeft(QPainter *painter)
     int longLineLen = 15;
     int shortLineLen = 10;
 
-    //Draw scale value and scale value according to range value. Long line needs to move 10 pixels. Short line needs to move 5 pixels.
+    //Draw scale value according to range value. Long line needs to move 10 pixels and short line needs to move 5 pixels.
     for (int i = _minValue; i <= _maxValue; i = i + _shortStep) {
         if (i % _longStep == 0) {
             QPointF leftPoint = QPointF(x, y);
@@ -144,17 +141,14 @@ void VerticalBarGauge::drawRulerRight(QPainter *painter)
     painter->save();
     painter->setPen(_lineColor);
 
-    double x = 0;
-
-    // draw a part of the bottom line on the horizontal ruler
-    double y = width();
-
+    double x = width();
+    double y = height();
+/*
     QPointF lineTopRightPot = QPointF(x, y);
-    QPointF lineBottomRightPot = QPointF(x, y+height());
+    QPointF lineBottomRightPot = QPointF(x, height());
     painter->drawLine(lineBottomRightPot, lineTopRightPot);
+*/
 
-
-    // draw the upper part and the lower part of the horizontal ruler scale
     double length = height();
     // Calculate how much each cell moves
     double increment = length / (_maxValue - _minValue);
@@ -162,12 +156,13 @@ void VerticalBarGauge::drawRulerRight(QPainter *painter)
     int longLineLen = 15;
     int shortLineLen = 10;
 
-    //Draw scale value and scale value according to range value. Long line needs to move 10 pixels. Short line needs to move 5 pixels.
+    //Draw scale value according to range value. Long line needs to move 10 pixels. Short line needs to move 5 pixels.
     for (int i = _minValue; i <= _maxValue; i = i + _shortStep) {
         if (i % _longStep == 0) {
-            QPointF leftPoint = QPointF(x, y);
-            QPointF rightPoint = QPointF(x + longLineLen, y);
-            painter->drawLine(leftPoint, rightPoint);
+
+            QPointF leftPoint = QPointF(x - longLineLen, y);
+            QPointF rightPoint = QPointF(x, y);
+            painter->drawLine(rightPoint, leftPoint);
 
             // The first value and the last value do not draw
             if (i == _minValue || i == _maxValue) {
@@ -179,8 +174,7 @@ void VerticalBarGauge::drawRulerRight(QPainter *painter)
             double textWidth = fontMetrics().width(strValue);
             double textHeight = fontMetrics().height();
 
-            //QPointF textPot = QPointF(x - textWidth / 2, y + textHeight + longLineLen);
-            QPointF textPot = QPointF(x + textWidth/3 +longLineLen , y +textHeight/4);
+            QPointF textPot = QPointF(x - longLineLen*2.5 - textWidth/2, y+ textHeight/4);
 
             painter->drawText(textPot, strValue);
         } else {
@@ -190,17 +184,15 @@ void VerticalBarGauge::drawRulerRight(QPainter *painter)
                 shortLineLen = 6;
             }
 
-            QPointF leftP = QPointF(x, y);
-            QPointF rightP = QPointF(x+ shortLineLen, y );
-            painter->drawLine(leftP, rightP);
+            QPointF leftP = QPointF(x - shortLineLen, y );
+            QPointF rightP = QPointF(x, y);
+            painter->drawLine(rightP,leftP);
         }
 
         y -= increment * _shortStep;
     }
 
     painter->restore();
-}
-    
 }
 
 double VerticalBarGauge::getMinValue() const{ return _minValue;}
@@ -232,7 +224,7 @@ void VerticalBarGauge::setPrecision(int Precision){ _precision =Precision;}
 void VerticalBarGauge::setLongStep(int LongStep){ _longStep = LongStep;}
 void VerticalBarGauge::setShortStep(int ShortStep){ _shortStep= ShortStep;}
 void VerticalBarGauge::setRulerLeft(bool RulerLeft){ _rulerLeft=RulerLeft;}
-void VerticalBarGauge::setRulerRight(bool Ruler){ _rulerRight=RulerRight;}
+void VerticalBarGauge::setRulerRight(bool RulerRight){ _rulerRight=RulerRight;}
 
 void VerticalBarGauge::setAnimation(bool Animation){ _animation = Animation;}
 void VerticalBarGauge::setAnimationStep(double AnimationStep){ _animationStep = AnimationStep;}
