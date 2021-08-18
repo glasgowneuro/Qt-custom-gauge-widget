@@ -1,5 +1,6 @@
 
 add_subdirectory(AttitudeMeter)
+add_subdirectory(Arch)
 add_subdirectory(BarGauge)
 add_subdirectory(Basic)
 add_subdirectory(CircularBar)
