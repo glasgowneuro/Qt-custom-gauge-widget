@@ -23,7 +23,7 @@ VerticalBarGauge::VerticalBarGauge(QWidget *parent) :
     setRulerLeft(true);
     setRulerRight(true);
     ui->setupUi(this);
-
+    ui->_valueLabel->setStyleSheet("QLabel {color: white;}");
     connect(ui->verticalSlider, &QSlider::valueChanged, this, &VerticalBarGauge::valueChangeSlot);
 }
 
@@ -34,6 +34,8 @@ VerticalBarGauge::~VerticalBarGauge() {
 void VerticalBarGauge::valueChangeSlot(int value)
 {
     _currentValue=value;
+    ui->_valueLabel->setText(QString::number(value)+ "%");
+
     repaint();
 }
 

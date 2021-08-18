@@ -5,6 +5,7 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_BarGauge.h" resolved
 
 #include <QPainter>
+#include <QColorDialog>
 #include "bargauge.h"
 #include "ui_bargauge.h"
 
@@ -20,8 +21,8 @@ BarGauge::BarGauge(QWidget *parent) :QWidget(parent), ui(new Ui::BarGauge)
     setLongStep(10);
     setRulerTop(true);
     setRulerBottom(true);
-    //setEnabled(true);
     ui->setupUi(this);
+    ui->_valueLabel->setStyleSheet("QLabel {color: white;}");
     connect(ui->verticalSlider, &QSlider::valueChanged,this,&BarGauge::valueChangeSlot);
 }
 
@@ -31,6 +32,7 @@ BarGauge::~BarGauge() {
 void BarGauge::valueChangeSlot(int value)
 {
     currentValue=value;
+    ui->_valueLabel->setText(QString::number(value)+ "%");
     repaint();
 }
 void BarGauge::paintEvent(QPaintEvent *)
