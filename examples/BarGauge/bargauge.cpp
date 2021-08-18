@@ -10,9 +10,9 @@
 
 BarGauge::BarGauge(QWidget *parent) :QWidget(parent), ui(new Ui::BarGauge)
 {
-    setBgColor(QColor("White"));
-    setProgressColor(QColor("Green"));
-    setLineColor(QColor("DarkRed"));
+    setBgColor(Qt::darkGray);
+    setProgressColor(Qt::darkBlue);
+    setLineColor(Qt::white);
     setRange(1,100);
     setAnimation(true);
     setPrecision(1);
