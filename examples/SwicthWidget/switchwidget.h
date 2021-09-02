@@ -15,6 +15,8 @@ public:
     SwitchWidget(QWidget *parent = nullptr);
     ~SwitchWidget();
     void setTextLabel(const QString& text);
+signals:
+    void checked(bool  check);
 
 private:
     Ui::SwitchWidget *ui;
