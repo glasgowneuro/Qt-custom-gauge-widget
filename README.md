@@ -17,5 +17,6 @@ When the solution is correctly loaded, do the following to build its projects:
 - Build
 - Run
 
+### Links
 This is a release for testing, the code needs more work on it, as I am willing to add more improvements.
 Read more at: https://github.com/Berrima/Qt-custom-gauge-widget
