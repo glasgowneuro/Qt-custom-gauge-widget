@@ -14,7 +14,6 @@ find_package(Qt5 REQUIRED COMPONENTS
 add_executable(SwitchWidget-example
         main.cpp
         SwicthWidget.pro
-        SwicthWidget.pro.user
         SwicthWidget.qrc
         switchwidget.cpp
         switchwidget.h
