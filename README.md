@@ -19,7 +19,6 @@ When the solution is correctly loaded, do the following to build its projects:
 
 ### Widgets
 ![AttitudeMeter](/ReadMeImages/AttitudeMeter.png)
-<img src=“/ReadMeImages/AttitudeMeter.png”>
 
 ### Links
 This is a release for testing, the code needs more work on it, as I am willing to add more improvements.
