@@ -18,7 +18,43 @@ When the solution is correctly loaded, do the following to build its projects:
 - Run
 
 ### Widgets
+![Arch](/ReadMeImages/Arch.png)
+
 ![AttitudeMeter](/ReadMeImages/AttitudeMeter.png)
+
+![BarGauge](/ReadMeImages/BarGauge.png)
+
+![Basic](/ReadMeImages/BasicGauge.png)
+
+![Button](/ReadMeImages/Button.png)
+
+![CircularBar](/ReadMeImages/circularBar.png)
+
+![Compass](/ReadMeImages/Compass.png)
+
+![DoubleNeedle](/ReadMeImages/DoubleNeedle.png)
+
+![FuelGauge](/ReadMeImages/FuelGauge.png)
+
+![LcdGauge](/ReadMeImages/lcdGauge.png)
+
+![ProgressGauge](/ReadMeImages/ProgressGauge.png)
+
+![RollGauge](/ReadMeImages/RollGauge.png)
+
+![SpeedGauge](/ReadMeImages/SpeedGauge.png)
+
+![SwitchWidget](/ReadMeImages/SwitchWidget.png)
+
+![ToggleButton](/ReadMeImages/ToggleButton.png)
+
+![ToggleSwitch](/ReadMeImages/ToggleSwitch.png)
+
+![VerticalBarGauge](/ReadMeImages/Vertical.png)
+
+![WindGauge](/ReadMeImages/WindGauge.png)
+
+>>>>>>> c720cf244627c2c97932c6478f5578b1d99e92b9
 
 ### Links
 This is a release for testing, the code needs more work on it, as I am willing to add more improvements.
