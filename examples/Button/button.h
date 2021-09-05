@@ -15,6 +15,8 @@ public:
     Button(QWidget *parent = nullptr);
     ~Button();
     void setTextLabel(const QString& text);
+signals:
+    void checked(bool  check);
 
 private:
     Ui::Button *ui;

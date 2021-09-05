@@ -11,6 +11,8 @@ Button::Button(QWidget *parent)
     file.open(QFile::ReadOnly);
     QString styleSheet = QLatin1String(file.readAll());
     setStyleSheet(styleSheet);
+    QObject::connect(ui->pushButton, &QPushButton::toggled, this, &Button::checked);
+
 }
 
 Button::~Button()
