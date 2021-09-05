@@ -54,8 +54,6 @@ When the solution is correctly loaded, do the following to build its projects:
 
 ![WindGauge](/ReadMeImages/WindGauge.png)
 
->>>>>>> c720cf244627c2c97932c6478f5578b1d99e92b9
-
 ### Links
 This is a release for testing, the code needs more work on it, as I am willing to add more improvements.
 Read more at: https://github.com/Berrima/Qt-custom-gauge-widget
