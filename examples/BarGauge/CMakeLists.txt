@@ -11,17 +11,16 @@ find_package(Qt5 REQUIRED COMPONENTS
         Widgets
         )
 
-add_executable(AttitudeMeter-example
+add_executable(BarGauge-example
         main.cpp
-        mainwindow.h
-        mainwindow.cpp
-        mainwindow.ui
+        bargauge.h
+        bargauge.ui
+        bargauge.cpp
         )
 
-target_link_libraries(AttitudeMeter-example
+target_link_libraries(BarGauge-example
         PRIVATE
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
-        QcGaugeWidget
         )

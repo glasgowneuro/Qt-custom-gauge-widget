@@ -11,17 +11,16 @@ find_package(Qt5 REQUIRED COMPONENTS
         Widgets
         )
 
-add_executable(AttitudeMeter-example
+add_executable(VerticalBarGauge-example
         main.cpp
-        mainwindow.h
-        mainwindow.cpp
-        mainwindow.ui
+        VerticaBarGauge.cpp
+        VerticaBarGauge.h
+        verticalbargauge.ui
         )
 
-target_link_libraries(AttitudeMeter-example
+target_link_libraries(VerticalBarGauge-example
         PRIVATE
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
-        QcGaugeWidget
         )

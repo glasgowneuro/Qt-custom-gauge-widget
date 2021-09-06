@@ -11,14 +11,14 @@ find_package(Qt5 REQUIRED COMPONENTS
         Widgets
         )
 
-add_executable(AttitudeMeter-example
+add_executable(RollGauge-example
         main.cpp
-        mainwindow.h
         mainwindow.cpp
+        mainwindow.h
         mainwindow.ui
         )
 
-target_link_libraries(AttitudeMeter-example
+target_link_libraries(RollGauge-example
         PRIVATE
         Qt5::Core
         Qt5::Gui

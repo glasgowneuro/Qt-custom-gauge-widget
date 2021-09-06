@@ -11,14 +11,16 @@ find_package(Qt5 REQUIRED COMPONENTS
         Widgets
         )
 
-add_executable(AttitudeMeter-example
+add_executable(ProgressGauge-example
         main.cpp
-        mainwindow.h
-        mainwindow.cpp
-        mainwindow.ui
+        MainWindow.cpp
+        MainWindow.h
+        MainWindow.ui
+        RoundGaugeGraphicsObject.h
+        RoundGaugeGraphicsObject.cpp
         )
 
-target_link_libraries(AttitudeMeter-example
+target_link_libraries(ProgressGauge-example
         PRIVATE
         Qt5::Core
         Qt5::Gui

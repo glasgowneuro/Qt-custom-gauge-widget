@@ -11,14 +11,14 @@ find_package(Qt5 REQUIRED COMPONENTS
         Widgets
         )
 
-add_executable(basic-example
+add_executable(Basic-example
         main.cpp
         mainwindow.h
         mainwindow.cpp
         mainwindow.ui
         )
 
-target_link_libraries(basic-example
+target_link_libraries(Basic-example
         PRIVATE
         Qt5::Core
         Qt5::Gui

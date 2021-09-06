@@ -11,14 +11,14 @@ find_package(Qt5 REQUIRED COMPONENTS
         Widgets
         )
 
-add_executable(AttitudeMeter-example
+add_executable(FuelGauge-example
         main.cpp
         mainwindow.h
         mainwindow.cpp
         mainwindow.ui
         )
 
-target_link_libraries(AttitudeMeter-example
+target_link_libraries(FuelGauge-example
         PRIVATE
         Qt5::Core
         Qt5::Gui

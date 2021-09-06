@@ -11,17 +11,18 @@ find_package(Qt5 REQUIRED COMPONENTS
         Widgets
         )
 
-add_executable(AttitudeMeter-example
+add_executable(CircularBar-example
         main.cpp
-        mainwindow.h
-        mainwindow.cpp
-        mainwindow.ui
+        widget.cpp
+        widget.h
+        widget.ui
+        qcircularbar.cpp
+        qcircularbar.h
         )
 
-target_link_libraries(AttitudeMeter-example
+target_link_libraries(CircularBar-example
         PRIVATE
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
-        QcGaugeWidget
         )

@@ -11,17 +11,21 @@ find_package(Qt5 REQUIRED COMPONENTS
         Widgets
         )
 
-add_executable(AttitudeMeter-example
+add_executable(SwitchWidget-example
         main.cpp
-        mainwindow.h
-        mainwindow.cpp
-        mainwindow.ui
+        SwicthWidget.pro
+        SwicthWidget.qrc
+        switchwidget.cpp
+        switchwidget.h
+        SwitchWidget.qss
+        switchwidget.ui
+        toggle_off.png
+        toggle_on.png
         )
 
-target_link_libraries(AttitudeMeter-example
+target_link_libraries(SwitchWidget-example
         PRIVATE
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
-        QcGaugeWidget
         )

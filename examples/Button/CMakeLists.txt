@@ -11,17 +11,20 @@ find_package(Qt5 REQUIRED COMPONENTS
         Widgets
         )
 
-add_executable(AttitudeMeter-example
+add_executable(Button-example
         main.cpp
-        mainwindow.h
-        mainwindow.cpp
-        mainwindow.ui
+        button.cpp
+        button.h
+        Button.qss
+        button.ui
+        customButton.qrc
+        power_off.png
+        power_on.png
         )
 
-target_link_libraries(AttitudeMeter-example
+target_link_libraries(Button-example
         PRIVATE
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
-        QcGaugeWidget
         )
