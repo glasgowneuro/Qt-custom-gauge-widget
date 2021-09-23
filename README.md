@@ -50,8 +50,8 @@ When the solution is correctly loaded, do the following to build its projects:
 ![ToggleButton](/ReadMeImages/ToggleBotton.png)  
 - ToggleSwitch  
 ![ToggleSwitch](/ReadMeImages/ToggleSwitch.png)  
-- VerticalBarGauge  
-![VerticalBarGauge](/ReadMeImages/Vertical.png)  
+- QcVerticalBarGauge  
+![QcVerticalBarGauge](/ReadMeImages/Vertical.png)  
 - WindGauge  
 ![WindGauge](/ReadMeImages/WindGauge.png)  
 

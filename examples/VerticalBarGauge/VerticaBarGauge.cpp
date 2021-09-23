@@ -9,7 +9,7 @@
 #include "ui_verticalbargauge.h"
 
 
-VerticalBarGauge::VerticalBarGauge(QWidget *parent) :
+VerticalBarGauge::QcVerticalBarGauge(QWidget *parent) :
         QWidget(parent), ui(new Ui::VerticalBarGauge) {
 
     setBgColor(Qt::darkGray);
@@ -138,7 +138,7 @@ void VerticalBarGauge::drawRulerLeft(QPainter *painter)
     painter->restore();
 }
 
-void VerticalBarGauge::drawRulerRight(QPainter *painter) 
+void VerticalBarGauge::drawRulerRight(QPainter *painter)
 {
     painter->save();
     painter->setPen(_lineColor);
@@ -220,8 +220,8 @@ void VerticalBarGauge::setRange(double MinValue, double MaxValue){ _minValue = M
 void VerticalBarGauge::setRange(int MinValue, int MaxValue){ _minValue = MinValue; _maxValue = MaxValue;}
 void VerticalBarGauge::setMinValue(double MinValue){ _minValue=MinValue; }
 void VerticalBarGauge::setMaxValue(double MaxValue){ _maxValue = MaxValue;}
-void VerticalBarGauge::setValue(double Value){_value = Value;}
-void VerticalBarGauge::setValue(int Value){_value = Value;}
+void VerticalBarGauge::setValue(double Value){ _value = Value;}
+void VerticalBarGauge::setValue(int Value){ _value = Value;}
 void VerticalBarGauge::setPrecision(int Precision){ _precision =Precision;}
 void VerticalBarGauge::setLongStep(int LongStep){ _longStep = LongStep;}
 void VerticalBarGauge::setShortStep(int ShortStep){ _shortStep= ShortStep;}

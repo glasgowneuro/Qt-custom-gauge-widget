@@ -8,7 +8,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    VerticalBarGauge w;
+    QcVerticalBarGauge w;
     w.show();
 
     return a.exec();

@@ -3,6 +3,7 @@
 #include <QtGui>
 #include <QPainter>
 #include <QFont>
+#define PI 3.1415926535
 
 QCircularBar::QCircularBar(QWidget *parent)
     : QWidget(parent)
@@ -39,14 +40,10 @@ QCircularBar::QCircularBar(QWidget *parent)
    setCoverGlassEnabled(true);
    setEnabled(true);
 }
-
-
 QCircularBar::~QCircularBar()
 {
     delete m_lcd;
 }
-
-
 int QCircularBar::digits(int val)
 {
     int digits = 0;
@@ -57,15 +54,11 @@ int QCircularBar::digits(int val)
        }
        return digits;
 }
-
-
 void QCircularBar::setBarSize(int barSize)
 {
     m_barSize=barSize;
     update();
 }
-
-
 void QCircularBar::setValue(double value)
 {
 
@@ -125,12 +118,8 @@ void QCircularBar::setValue(double value)
         QString style=QString("background-color: transparent; color: rgb(%1,%2,%3);").arg(r).arg(g).arg(b);
         m_lcd->setStyleSheet(style);
     }
-
     update();
-
 }
-
-
 int QCircularBar::digitCount() const
 {
     if(m_autodigits)
@@ -141,27 +130,20 @@ int QCircularBar::digitCount() const
     else
         return 0;
 }
-
-
 void QCircularBar::setValue(int value)
 {
    setValue((double)value);
    update();
 }
-
 void QCircularBar::setMinValue(double value)
 {
    m_minValue=value;
    update();
 }
-
-
 void QCircularBar::setMinValue(int value)
 {
   setMinValue((double)value);
 }
-
-
 void QCircularBar::setMaxValue(double value)
 {
     if(value > m_minValue)
@@ -172,14 +154,10 @@ void QCircularBar::setMaxValue(double value)
     else
         emit errorSignal(MaxValueError);
 }
-
-
 void QCircularBar::setMaxValue(int value)
 {
   setMaxValue((double)value);
 }
-
-
 void QCircularBar::setThreshold(double value)
 {
     if(value > m_minValue && value < m_maxValue)
@@ -191,34 +169,25 @@ void QCircularBar::setThreshold(double value)
     else
         emit errorSignal(ThresholdError);
 }
-
-
 void QCircularBar::setThreshold(int value)
 {
   setThreshold((double)value);
 }
-
-
-
 void QCircularBar::setPrecision(int precision)
 {
    m_precision=precision;
    update();
 }
-
-
 void QCircularBar::setLabel(QString label)
 {
     m_label=label;
     update();
 }
-
 void QCircularBar::setUnits(QString units)
 {
     m_units=units;
     update();
 }
-
 void QCircularBar::setDigitCount(int n_digits)
 {
     if(n_digits>0)
@@ -229,8 +198,6 @@ void QCircularBar::setDigitCount(int n_digits)
     else
             m_autodigits=true;    
 }
-
-
 void QCircularBar::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
@@ -239,8 +206,6 @@ void QCircularBar::resizeEvent(QResizeEvent *event)
     m_lcd->setGeometry(width()/2-side/4,height()/2-side/6,side/2,side/3);
     update();
 }
-
-
 void QCircularBar::changeEvent(QEvent *event)
 {
     if(!isEnabled())
@@ -252,8 +217,6 @@ void QCircularBar::changeEvent(QEvent *event)
     else
         setValue(value());
 }
-
-
 void QCircularBar::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
@@ -278,13 +241,11 @@ void QCircularBar::paintEvent(QPaintEvent *event)
         drawThresholdLine(&painter);
 
 }
-
 void QCircularBar::setCoverGlassEnabled(bool enable)
 {
     m_coverGlassEnabled=enable;
     update();
 }
-
 void QCircularBar::setSteps(int nSteps)
 {
     if(nSteps>1)
@@ -295,96 +256,67 @@ void QCircularBar::setSteps(int nSteps)
     else
         nSteps=1;
 }
-
-
 void QCircularBar::setStartAngle(int value)
 {
     m_startAngle=value;
     update();
 }
-
-
 void QCircularBar::setEndAngle(int value)
 {
     m_endAngle=value;
     update();
 }
-
-
 void QCircularBar::setForeground(QColor newForeColor)
 {
     m_foreground=newForeColor;
 
-
     int r,g,b;
     r=foreground().red();
     g=foreground().green();
     b=foreground().blue();
     QString style=QString("background-color: transparent; color: rgb(%1,%2,%3);").arg(r).arg(g).arg(b);
     m_lcd->setStyleSheet(style);
-
-
     update();
 }
-
-
 void QCircularBar::setBackground(QColor newBackColor)
 {
     m_background=newBackColor;
-
-
     int r,g,b;
     r=foreground().red();
     g=foreground().green();
     b=foreground().blue();
     QString style=QString("background-color: transparent; color: rgb(%1,%2,%3);").arg(r).arg(g).arg(b);
     m_lcd->setStyleSheet(style);
-
     update();
 }
-
-
 void QCircularBar::thresholdManager()
 {
     // m_thresholdFlag is used to avoid signals at each setValue
-    if(m_value > m_threshold /*&& !m_thresholdFlag*/)
+    if(m_value > m_threshold )
     {
-//     m_thresholdFlag=true;
      emit thresholdAlarm(true);
     }
-    else
-     if(m_value < m_threshold /*&& m_thresholdFlag*/)
+    else if(m_value < m_threshold)
      {
-//      m_thresholdFlag=false;
       emit thresholdAlarm(false);
      }
 }
-
-
 void QCircularBar::setThresholdEnabled(bool enable)
 {
   m_thresholdEnabled=enable;
   update();
 }
-
-
 void QCircularBar::setNumericIndicatorEnabled(bool enable)
 {
   m_numericIndicatorEnabled=enable;
   m_lcd->setVisible(enable);
   update();
 }
-
-
 void QCircularBar::setCircularBarEnabled(bool enable)
 {
     m_circularBarEnabled=enable;
     update();
 }
-
-#define PI 3.1415926535
-
-
 void QCircularBar::drawCrown(QPainter *painter)
 {
     painter->save();
@@ -403,8 +335,6 @@ void QCircularBar::drawCrown(QPainter *painter)
     painter->restore();
 
 }
-
-
 void QCircularBar::drawCoverGlass(QPainter *painter)
 {
     painter->save();
@@ -421,8 +351,6 @@ void QCircularBar::drawCoverGlass(QPainter *painter)
     painter->drawEllipse(-45,-45,90,90);
     painter->restore();
 }
-
-
 void QCircularBar::drawBackground(QPainter *painter)
 {
     painter->save();
@@ -430,8 +358,6 @@ void QCircularBar::drawBackground(QPainter *painter)
     painter->drawEllipse(-45, -45, 90, 90);
     painter->restore();
 }
-
-
 void QCircularBar::drawTicks(QPainter *painter)
 {
     painter->save();
@@ -456,18 +382,12 @@ void QCircularBar::drawTicks(QPainter *painter)
     painter->restore();
 
 }
-
 void QCircularBar::drawThresholdLine(QPainter *painter)
 {
     QPen pen;
 
     double thresholdAngle = ( m_startAngle+(m_endAngle-m_startAngle)/(m_maxValue-m_minValue)*(m_threshold-m_minValue) );
     pen.setWidth(2);
-
-//    pen.setColor(Qt::green);
-//    painter->setPen(pen);
-//    painter->drawArc(-40,-40,80,80,(int)m_startAngle*16,(int)(thresholdAngle-m_startAngle)*16);
-
     if(isEnabled())
         pen.setColor(Qt::red);
     else
@@ -476,7 +396,6 @@ void QCircularBar::drawThresholdLine(QPainter *painter)
     painter->drawArc(-40,-40,80,80,(int)thresholdAngle*16,(int)(-thresholdAngle+m_endAngle)*16);
 
 }
-
 void QCircularBar::drawCircularBar(QPainter *painter)
 {
     painter->save();
@@ -495,33 +414,9 @@ void QCircularBar::drawCircularBar(QPainter *painter)
     QPen pen = QPen(brush,barSize());
     painter->setPen(pen);
     painter->drawArc(-35,-35,70,70,(int)(m_startAngle*16),(int)((valueAngle-m_startAngle)*16));
-
     painter->restore();
 
-    if(thresholdEnabled())
-    {
-//        if(value()>threshold())
-//        {
-//            painter->save();
-//            double thresholdAngle = ( m_startAngle+(m_endAngle-m_startAngle)/(m_maxValue-m_minValue)*(m_threshold-m_minValue) );
-//            QRadialGradient haloGradientT(0, 0, 49, 0, 0);
-//            haloGradientT.setColorAt(0.7, Qt::red);
-//            haloGradientT.setColorAt(0.9, Qt::black);
-//            brush=QBrush(haloGradientT);
-//            pen = QPen(brush,4);
-//            painter->setPen(pen);
-//            painter->drawArc(-35,-35,70,70,(int)(thresholdAngle*16),(int)((valueAngle-thresholdAngle)*16));
-//            //painter->drawArc(-35,-35,70,70,(int)(m_startAngle*16),(int)((valueAngle-m_startAngle)*16));
-//            painter->restore();
-//        }
-    }
-
-
-
-
 }
-
-
 void QCircularBar::drawLabel(QPainter *painter)
 {
     painter->save();
@@ -542,8 +437,6 @@ void QCircularBar::drawLabel(QPainter *painter)
     painter->drawText(labelRect,Qt::AlignCenter, m_label);
     painter->restore();
 }
-
-
 void QCircularBar::drawUnits(QPainter *painter)
 {
     painter->save();
