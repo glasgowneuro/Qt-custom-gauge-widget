@@ -1,15 +1,12 @@
 //
-// Created by filippo on 10/07/21.
+// Created by filippo on 24/09/21.
 //
 
 #ifndef QCGAUGEWIDGET_BARGAUGE_H
 #define QCGAUGEWIDGET_BARGAUGE_H
 
-#include <Qt>
-#include <QWidget>
-#include <QProgressBar>
+#include <qcgaugewidget.h>
 #include <QLabel>
-#include "qcgaugewidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class BarGauge; }
@@ -18,25 +15,19 @@ QT_END_NAMESPACE
 class BarGauge : public QWidget {
 
     Q_OBJECT
- public:
+public:
     explicit BarGauge(QWidget *parent = nullptr);
     ~BarGauge() override;
     QcHorizontalBar* hBarGauge ;
 
 private:
     Ui::BarGauge *ui;
-
-    double currentValue; //current value
+    double _currentValue; //current value
 private slots:
     void valueChangeSlot(int value);
 
-Q_SIGNALS:
-    void valueChanged(double value);
+    Q_SIGNALS:
+            void valueChanged(double value);
 };
 
-
 #endif //QCGAUGEWIDGET_BARGAUGE_H
-
-
-
-

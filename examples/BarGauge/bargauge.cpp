@@ -1,20 +1,17 @@
 //
-// Created by filippo on 10/07/21.
+// Created by filippo on 24/09/21.
 //
 
-// You may need to build the project (run Qt uic code generator) to get "ui_BarGauge.h" resolved
 
 #include <QPainter>
 #include <QColorDialog>
 #include "bargauge.h"
 #include "ui_bargauge.h"
 
-BarGauge::BarGauge(QWidget *parent)
-                    :QWidget(parent),
-                    ui(new Ui::BarGauge)
+BarGauge::BarGauge(QWidget *parent):QWidget(parent), ui(new Ui::BarGauge)
 {
     ui->setupUi(this);
-
+    hBarGauge = new QcHorizontalBar(parent);
     hBarGauge->setBgColor(Qt::darkGray);
     hBarGauge->setProgressColor(Qt::darkBlue);
     hBarGauge->setLineColor(Qt::white);
@@ -24,16 +21,13 @@ BarGauge::BarGauge(QWidget *parent)
     hBarGauge->setLongStep(10);
     hBarGauge->setRulerTop(true);
     hBarGauge->setRulerBottom(true);
-    ui->horizontalLayout->addWidget(hBarGauge);
-/*
-    ui->_valueLabel->setStyleSheet("QLabel {color: white;}");
+
+    ui->_valueLabel->setStyleSheet("QLabel {color: black;}");
     ui->verticalSlider->setMinimum(-45);
     ui->verticalSlider->setMaximum(45);
     ui->verticalSlider->setValue(0);
-
-
-
-    connect(ui->verticalSlider, &QSlider::valueChanged,this,&BarGauge::valueChangeSlot);*/
+    ui->horizontalLayout->addWidget(hBarGauge);
+    connect(ui->verticalSlider, &QSlider::valueChanged,this,&BarGauge::valueChangeSlot);
 }
 
 BarGauge::~BarGauge() {
@@ -42,9 +36,7 @@ BarGauge::~BarGauge() {
 
 void BarGauge::valueChangeSlot(int value)
 {
-    /*
-    currentValue=value;
-    ui->_valueLabel->setText(QString::number(value)+ "%");*/
-    repaint();
+    _currentValue=value;
+    ui->_valueLabel->setText(QString::number(value)+ "%");
+    hBarGauge->setCurrentValue(value);
 }
-

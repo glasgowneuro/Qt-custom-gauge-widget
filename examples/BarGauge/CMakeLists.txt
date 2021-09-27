@@ -13,8 +13,8 @@ find_package(Qt5 REQUIRED COMPONENTS
 
 add_executable(BarGauge-example
         main.cpp
-        bargauge.h
         bargauge.ui
+        bargauge.h
         bargauge.cpp
         )
 
