@@ -1103,9 +1103,9 @@ void QcAttitudeMeter::drawHandle(QPainter *painter)
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-QcHorizontalBar::QcHorizontalBar(QWidget *parent): QWidget(parent) {}
-QcHorizontalBar::~QcHorizontalBar() {}
-void QcHorizontalBar::paintEvent(QPaintEvent *)
+QcBar::QcBar(QWidget *parent): QWidget(parent) {}
+QcBar::~QcBar() {}
+void QcBar::paintEvent(QPaintEvent *)
 {
     // draw the preparation work, enable anti-aliasing
     QPainter painter(this);
@@ -1129,7 +1129,7 @@ void QcHorizontalBar::paintEvent(QPaintEvent *)
     }
 
 }
-void QcHorizontalBar::drawBg(QPainter *painter)
+void QcBar::drawBg(QPainter *painter)
 {
     painter->save();
     painter->setPen(lineColor);
@@ -1137,7 +1137,7 @@ void QcHorizontalBar::drawBg(QPainter *painter)
     painter->drawRect(rect());
     painter->restore();
 }
-void QcHorizontalBar::drawProgress(QPainter *painter)
+void QcBar::drawProgress(QPainter *painter)
 {
     painter->save();
     painter->setPen(Qt::NoPen);
@@ -1161,7 +1161,7 @@ void QcHorizontalBar::drawProgress(QPainter *painter)
     }
     painter->restore();
 }
-void QcHorizontalBar::drawRulerTop(QPainter *painter)
+void QcBar::drawRulerTop(QPainter *painter)
 {
     painter->save();
     painter->setPen(lineColor);
@@ -1218,7 +1218,7 @@ void QcHorizontalBar::drawRulerTop(QPainter *painter)
 
     painter->restore();
 }
-void QcHorizontalBar::drawRulerBottom(QPainter *painter)
+void QcBar::drawRulerBottom(QPainter *painter)
 {
     painter->save();
     painter->setPen(lineColor);
@@ -1275,7 +1275,7 @@ void QcHorizontalBar::drawRulerBottom(QPainter *painter)
 
     painter->restore();
 }
-void QcHorizontalBar::drawRulerLeft(QPainter *painter)
+void QcBar::drawRulerLeft(QPainter *painter)
 {
     painter->save();
     painter->setPen(lineColor);
@@ -1332,7 +1332,7 @@ void QcHorizontalBar::drawRulerLeft(QPainter *painter)
 
     painter->restore();
 }
-void QcHorizontalBar::drawRulerRight(QPainter *painter)
+void QcBar::drawRulerRight(QPainter *painter)
 {
     painter->save();
     painter->setPen(lineColor);
@@ -1386,38 +1386,41 @@ void QcHorizontalBar::drawRulerRight(QPainter *painter)
     painter->restore();
 }
 
-QcHorizontalBar::DirectionEnum QcHorizontalBar::getDirection() const {return direction;}
-double QcHorizontalBar::getMinValue() const{ return minValue;}
-double QcHorizontalBar::getMaxValue() const{return maxValue;}
-double QcHorizontalBar::getValue() const{ return value;}
-int QcHorizontalBar::getPrecision() const{return precision;}
-int QcHorizontalBar::getLongStep() const{return longStep;}
-int QcHorizontalBar::getShortStep() const{return shortStep;}
-bool QcHorizontalBar::getRulerTop() const{return rulerTop;}
-bool QcHorizontalBar::getRulerBottom() const{return rulerBottom;}
-bool QcHorizontalBar::getRulerLeft() const{return rulerLeft;}
-bool QcHorizontalBar::getRulerRight() const{return rulerRight;}
-QColor QcHorizontalBar::getBgColor() const{return bgColor;}
-QColor QcHorizontalBar::getLineColor() const{return lineColor;}
-QColor QcHorizontalBar::getProgressColor() const{return progressColor;}
+QcBar::DirectionEnum QcBar::getDirection() const {return direction;}
+double QcBar::getMinValue() const{ return minValue;}
+double QcBar::getMaxValue() const{return maxValue;}
+double QcBar::getValue() const{ return value;}
+int QcBar::getPrecision() const{return precision;}
+int QcBar::getLongStep() const{return longStep;}
+int QcBar::getShortStep() const{return shortStep;}
+bool QcBar::getRulerTop() const{return rulerTop;}
+bool QcBar::getRulerBottom() const{return rulerBottom;}
+bool QcBar::getRulerLeft() const{return rulerLeft;}
+bool QcBar::getRulerRight() const{return rulerRight;}
+QColor QcBar::getBgColor() const{return bgColor;}
+QColor QcBar::getLineColor() const{return lineColor;}
+QColor QcBar::getProgressColor() const{return progressColor;}
 
-void QcHorizontalBar::setDirection(DirectionEnum paintDirection) {direction=paintDirection;}
-void QcHorizontalBar::setCurrentValue(int value)
+void QcBar::setDirection(DirectionEnum paintDirection) { direction=paintDirection;}
+void QcBar::setCurrentValue(int value)
 {
-    currentValue=value;
+    if(value<minValue || value>maxValue)
+        return;
+    else
+        currentValue=value;
     repaint();
 }
-void QcHorizontalBar::setRange(double MinValue, double MaxValue){minValue = MinValue; maxValue = MaxValue;}
-void QcHorizontalBar::setRange(int MinValue, int MaxValue){ minValue = MinValue; maxValue = MaxValue;}
-void QcHorizontalBar::setMinValue(double MinValue){ minValue=MinValue; }
-void QcHorizontalBar::setMaxValue(double MaxValue){ maxValue = MaxValue;}
-void QcHorizontalBar::setPrecision(int Precision){precision =Precision;}
-void QcHorizontalBar::setLongStep(int LongStep){longStep = LongStep;}
-void QcHorizontalBar::setShortStep(int ShortStep){shortStep= ShortStep;}
-void QcHorizontalBar::setRulerTop(bool RulerTop){rulerTop=RulerTop;}
-void QcHorizontalBar::setRulerBottom(bool RulerBottom){rulerBottom=RulerBottom;}
-void QcHorizontalBar::setRulerLeft(bool RulerLeft) {rulerLeft=RulerLeft;}
-void QcHorizontalBar::setRulerRight(bool RulerRight) {rulerRight=RulerRight;}
-void QcHorizontalBar::setBgColor(const QColor &BgColor){bgColor = BgColor;}
-void QcHorizontalBar::setLineColor(const QColor &LineColor){lineColor = LineColor;}
-void QcHorizontalBar::setProgressColor(const QColor &ProgressColor){progressColor = ProgressColor;}
+void QcBar::setRange(double MinValue, double MaxValue){ minValue = MinValue; maxValue = MaxValue;}
+void QcBar::setRange(int MinValue, int MaxValue){ minValue = MinValue; maxValue = MaxValue;}
+void QcBar::setMinValue(double MinValue){ minValue=MinValue; }
+void QcBar::setMaxValue(double MaxValue){ maxValue = MaxValue;}
+void QcBar::setPrecision(int Precision){ precision =Precision;}
+void QcBar::setLongStep(int LongStep){ longStep = LongStep;}
+void QcBar::setShortStep(int ShortStep){ shortStep= ShortStep;}
+void QcBar::setRulerTop(bool RulerTop){ rulerTop=RulerTop;}
+void QcBar::setRulerBottom(bool RulerBottom){ rulerBottom=RulerBottom;}
+void QcBar::setRulerLeft(bool RulerLeft) { rulerLeft=RulerLeft;}
+void QcBar::setRulerRight(bool RulerRight) { rulerRight=RulerRight;}
+void QcBar::setBgColor(const QColor &BgColor){ bgColor = BgColor;}
+void QcBar::setLineColor(const QColor &LineColor){ lineColor = LineColor;}
+void QcBar::setProgressColor(const QColor &ProgressColor){ progressColor = ProgressColor;}

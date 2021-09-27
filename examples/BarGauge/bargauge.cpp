@@ -8,7 +8,7 @@
 BarGauge::BarGauge(QWidget *parent):QWidget(parent), ui(new Ui::BarGauge)
 {
     ui->setupUi(this);
-    hBarGauge = new QcHorizontalBar(parent);
+    hBarGauge = new QcBar(parent);
     hBarGauge->setBgColor(Qt::darkGray);
     hBarGauge->setProgressColor(Qt::darkBlue);
     hBarGauge->setLineColor(Qt::white);

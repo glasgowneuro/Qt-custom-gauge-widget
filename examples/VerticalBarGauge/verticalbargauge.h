@@ -20,7 +20,7 @@ class verticalbargauge : public QWidget {
 public:
     explicit verticalbargauge(QWidget *parent = nullptr);
     ~verticalbargauge() override;
-    QcHorizontalBar* vBarGauge ;
+    QcBar* vBarGauge ;
     QLabel* valueLabel;
     QSlider* verticalSlider;
 

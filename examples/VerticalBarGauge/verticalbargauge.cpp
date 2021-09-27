@@ -8,8 +8,8 @@
 verticalbargauge::verticalbargauge(QWidget *parent):QWidget(parent), ui(new Ui::verticalbargauge)
 {
     ui->setupUi(this);
-    vBarGauge = new QcHorizontalBar(parent);
-    vBarGauge->setDirection(QcHorizontalBar::DirectionEnum::Vertical);
+    vBarGauge = new QcBar(parent);
+    vBarGauge->setDirection(QcBar::DirectionEnum::Vertical);
     vBarGauge->setBgColor(Qt::darkGray);
     vBarGauge->setProgressColor(Qt::darkBlue);
     vBarGauge->setLineColor(Qt::white);

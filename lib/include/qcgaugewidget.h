@@ -364,7 +364,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-class QCGAUGE_DECL QcHorizontalBar : public QWidget {
+class QCGAUGE_DECL QcBar : public QWidget {
     Q_OBJECT
 public:
     enum DirectionEnum
@@ -372,9 +372,10 @@ public:
         Horizontal,
         Vertical
     };
+
 public:
-    QcHorizontalBar(QWidget *parent = nullptr);
-    ~QcHorizontalBar() override;
+    QcBar(QWidget *parent = nullptr);
+    ~QcBar() override;
 
 protected:
 

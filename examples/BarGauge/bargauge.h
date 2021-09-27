@@ -17,7 +17,7 @@ class BarGauge : public QWidget {
 public:
     explicit BarGauge(QWidget *parent = nullptr);
     ~BarGauge() override;
-    QcHorizontalBar* hBarGauge ;
+    QcBar* hBarGauge ;
 
 private:
     Ui::BarGauge *ui;
