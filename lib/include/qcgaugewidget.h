@@ -364,37 +364,49 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-
 class QCGAUGE_DECL QcHorizontalBar : public QWidget {
     Q_OBJECT
 public:
+    enum DirectionEnum
+    {
+        Horizontal,
+        Vertical
+    };
+public:
     QcHorizontalBar(QWidget *parent = nullptr);
     ~QcHorizontalBar() override;
+
 protected:
+
     void paintEvent(QPaintEvent *);
     void drawBg(QPainter *painter);
     void drawProgress(QPainter *painter);
     void drawRulerTop(QPainter *painter);
     void drawRulerBottom(QPainter *painter);
+    void drawRulerLeft(QPainter *painter);
+    void drawRulerRight(QPainter *painter);
 
 private:
+    DirectionEnum direction= DirectionEnum::Horizontal; //direction
     double minValue; //minimum
     double maxValue; //maximum
     double value; //target value
     int precision; //precision, a few decimal places
     int longStep; //long line equal division step
     int shortStep; //short line equal step size
-    bool rulerTop; //the tick is above
-    bool rulerBottom; //the tick is under
+    bool rulerTop=true; //the tick is above
+    bool rulerBottom=true; //the tick is under
+    bool rulerLeft=false; //the tick is on left
+    bool rulerRight=false; //the tick is on right
 
     QColor bgColor; //background color
     QColor lineColor; //Line color
     QColor progressColor; // progress color
 
-    bool reverse; //regression
     double currentValue; //current value
 
 public:
+    DirectionEnum getDirection()    const;
     double getMinValue()            const;
     double getMaxValue()            const;
     double getValue()               const;
@@ -404,6 +416,8 @@ public:
     int getShortStep()              const;
     bool getRulerTop()              const;
     bool getRulerBottom()           const;
+    bool getRulerLeft()             const;
+    bool getRulerRight()            const;
 
     QColor getBgColor()             const;
     QColor getLineColor()           const;
@@ -416,6 +430,9 @@ public Q_SLOTS:
     // Set the range value
     void setRange(double minValue, double maxValue);
     void setRange(int minValue, int maxValue);
+
+    // Set paint direction
+    void setDirection(DirectionEnum direction);
 
     // Set the maximum and minimum
     void setMinValue(double minValue);
@@ -430,111 +447,20 @@ public Q_SLOTS:
     void setRulerTop(bool rulerTop);
     // Set the scale on the bottom
     void setRulerBottom(bool rulerBottom);
-
-    // Set the background color
-    void setBgColor(const QColor &bgColor);
-    // Set the line color
-    void setLineColor(const QColor &lineColor);
-    // Set the progress color
-    void setProgressColor(const QColor &progressColor);
-};
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////
-
-class QCGAUGE_DECL QcVerticalBarGauge : public QWidget{
-
-Q_OBJECT
-
-public:
-    explicit QcVerticalBarGauge(QWidget *parent = nullptr);
-    ~QcVerticalBarGauge() override;
-
-protected:
-    void paintEvent(QPaintEvent *);
-    void drawBg(QPainter *painter);
-    void drawProgress(QPainter *painter);
-    void drawRulerLeft(QPainter *painter);
-    void drawRulerRight(QPainter *painter);
-
-private:
-    double _minValue=0; //minimum
-    double _maxValue=0; //maximum
-    double _value=0; //target value
-    int _precision=0; //_precision, a few decimal places
-
-    int _longStep=0; //long line equal division step
-    int _shortStep=0; //short line equal step size
-    bool _rulerLeft= false; //the tick is on left
-    bool _rulerRight= false; //the tick is on right
-
-    bool _animation= false; // whether to enable _animation display
-    double _animationStep=0; // _animation display step size
-
-    QColor _bgColor; //background color
-    QColor _lineColor; //Line color
-    QColor _progressColor; // progress color
-
-    double _currentValue; //current value
-
-public:
-    double getMinValue()            const;
-    double getMaxValue()            const;
-    double getValue()               const;
-    int getPrecision()              const;
-
-    int getLongStep()               const;
-    int getShortStep()              const;
-    bool getRulerLeft()             const;
-    bool getRulerRight()            const;
-
-
-    bool getAnimation()             const;
-    double getAnimationStep()       const;
-
-    QColor getBgColor()             const;
-    QColor getLineColor()           const;
-    QColor getProgressColor()       const;
-
-public Q_SLOTS:
-    // Set the range value
-    void setRange(double minValue, double maxValue);
-    void setRange(int minValue, int maxValue);
-
-    // Set the maximum and minimum
-    void setMinValue(double minValue);
-    void setMaxValue(double maxValue);
-
-    // Set the target value
-    void setCurrentValue(int value);
-
-
-    // Set the accuracy
-    void setPrecision(int precision);
-    // Set the line equal step size
-    void setLongStep(int longStep);
-    void setShortStep(int shortStep);
-    // Set the scale on the left
+    // Set the scale on the Left
     void setRulerLeft(bool rulerLeft);
-    // Set the scale on the right
+    // Set the scale on the Right
     void setRulerRight(bool rulerRight);
 
-    // Set whether to enable _animation display
-    void setAnimation(bool animation);
-    // Set the step size of the _animation display
-    void setAnimationStep(double animationStep);
-
     // Set the background color
     void setBgColor(const QColor &bgColor);
     // Set the line color
     void setLineColor(const QColor &lineColor);
     // Set the progress color
     void setProgressColor(const QColor &progressColor);
-
 };
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
-
 
 #endif // QCGAUGEWIDGET_H

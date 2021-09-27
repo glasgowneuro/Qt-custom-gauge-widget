@@ -29,6 +29,7 @@
 
 
 #include <QStyleOption>
+#include <search.h>
 #include "qcgaugewidget.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -1114,9 +1115,18 @@ void QcHorizontalBar::paintEvent(QPaintEvent *)
     drawBg(&painter);
     // draw progress
     drawProgress(&painter);
-    // draw a ruler
-    if (rulerTop)   drawRulerTop(&painter);
-    if(rulerBottom) drawRulerBottom(&painter);
+
+    if(direction==DirectionEnum::Horizontal) {
+        // draw a ruler
+        if (rulerTop) drawRulerTop(&painter);
+        if (rulerBottom) drawRulerBottom(&painter);
+    }
+    else
+    {
+        // draw a ruler
+        if (rulerRight) drawRulerRight(&painter);
+        if (rulerLeft) drawRulerLeft(&painter);
+    }
 
 }
 void QcHorizontalBar::drawBg(QPainter *painter)
@@ -1133,12 +1143,22 @@ void QcHorizontalBar::drawProgress(QPainter *painter)
     painter->setPen(Qt::NoPen);
     painter->setBrush(progressColor);
 
-    double length = width();
-    double increment = length / (maxValue - minValue);
-    double initX = (currentValue - minValue) * increment;
+    if(direction==DirectionEnum::Horizontal) {
+        double length = width();
+        double increment = length / (maxValue - minValue);
+        double initX = (currentValue - minValue) * increment;
 
-    QRect rect(0, 0, initX, height());
-    painter->drawRect(rect);
+        QRect rect(0, 0, initX, height());
+        painter->drawRect(rect);
+    }
+    else
+    {
+        double length = height();
+        double increment = length / (maxValue - minValue);
+        double initX = (currentValue - minValue) * increment;
+        QRect rect(0, height()-initX, width(), initX);
+        painter->drawRect(rect);
+    }
     painter->restore();
 }
 void QcHorizontalBar::drawRulerTop(QPainter *painter)
@@ -1255,7 +1275,118 @@ void QcHorizontalBar::drawRulerBottom(QPainter *painter)
 
     painter->restore();
 }
+void QcHorizontalBar::drawRulerLeft(QPainter *painter)
+{
+    painter->save();
+    painter->setPen(lineColor);
 
+    double x = 0;
+    double y = height();
+
+    QPointF lineTopLeftPot = QPointF(x, y);
+    QPointF lineBottomLeftPot = QPointF(x, y+height());
+    painter->drawLine(lineBottomLeftPot,lineTopLeftPot);
+
+    double length = height();
+    // Calculate how much each cell moves
+    double increment = length / (maxValue - minValue);
+    //Long line short line length
+    int longLineLen = 15;
+    int shortLineLen = 10;
+
+    //Draw scale value according to range value. Long line needs to move 10 pixels and short line needs to move 5 pixels.
+    for (int i = minValue; i <= maxValue; i = i + shortStep) {
+        if (i % longStep == 0) {
+            QPointF leftPoint = QPointF(x, y);
+            QPointF rightPoint = QPointF(x + longLineLen, y);
+            painter->drawLine(leftPoint, rightPoint);
+
+            // The first value and the last value do not draw
+            if (i == minValue || i == maxValue) {
+                y -= increment * shortStep;
+                continue;
+            }
+
+            QString strValue = QString("%1").arg((double)i, 0, 'f', precision);
+            double textWidth = fontMetrics().width(strValue);
+            double textHeight = fontMetrics().height();
+
+            //QPointF textPot = QPointF(x - textWidth / 2, y + textHeight + longLineLen);
+            QPointF textPot = QPointF(x + textWidth/3 +longLineLen , y +textHeight/4);
+
+            painter->drawText(textPot, strValue);
+        } else {
+            if (i % (longStep / 2) == 0) {
+                shortLineLen = 10;
+            } else {
+                shortLineLen = 6;
+            }
+
+            QPointF leftP = QPointF(x, y);
+            QPointF rightP = QPointF(x+ shortLineLen, y );
+            painter->drawLine(leftP, rightP);
+        }
+
+        y -= increment * shortStep;
+    }
+
+    painter->restore();
+}
+void QcHorizontalBar::drawRulerRight(QPainter *painter)
+{
+    painter->save();
+    painter->setPen(lineColor);
+
+    double x = width();
+    double y = height();
+
+    double length = height();
+    // Calculate how much each cell moves
+    double increment = length / (maxValue - minValue);
+    //Long line short line length
+    int longLineLen = 15;
+    int shortLineLen = 10;
+
+    //Draw scale value according to range value. Long line needs to move 10 pixels. Short line needs to move 5 pixels.
+    for (int i = minValue; i <= maxValue; i = i + shortStep) {
+        if (i % longStep == 0) {
+
+            QPointF leftPoint = QPointF(x - longLineLen, y);
+            QPointF rightPoint = QPointF(x, y);
+            painter->drawLine(rightPoint, leftPoint);
+
+            // The first value and the last value do not draw
+            if (i == minValue || i == maxValue) {
+                y -= increment * shortStep;
+                continue;
+            }
+
+            QString strValue = QString("%1").arg((double)i, 0, 'f', precision);
+            double textWidth = fontMetrics().width(strValue);
+            double textHeight = fontMetrics().height();
+
+            QPointF textPot = QPointF(x - longLineLen*2.5 - textWidth/2, y+ textHeight/4);
+
+            painter->drawText(textPot, strValue);
+        } else {
+            if (i % (longStep / 2) == 0) {
+                shortLineLen = 10;
+            } else {
+                shortLineLen = 6;
+            }
+
+            QPointF leftP = QPointF(x - shortLineLen, y );
+            QPointF rightP = QPointF(x, y);
+            painter->drawLine(rightP,leftP);
+        }
+
+        y -= increment * shortStep;
+    }
+
+    painter->restore();
+}
+
+QcHorizontalBar::DirectionEnum QcHorizontalBar::getDirection() const {return direction;}
 double QcHorizontalBar::getMinValue() const{ return minValue;}
 double QcHorizontalBar::getMaxValue() const{return maxValue;}
 double QcHorizontalBar::getValue() const{ return value;}
@@ -1264,10 +1395,13 @@ int QcHorizontalBar::getLongStep() const{return longStep;}
 int QcHorizontalBar::getShortStep() const{return shortStep;}
 bool QcHorizontalBar::getRulerTop() const{return rulerTop;}
 bool QcHorizontalBar::getRulerBottom() const{return rulerBottom;}
+bool QcHorizontalBar::getRulerLeft() const{return rulerLeft;}
+bool QcHorizontalBar::getRulerRight() const{return rulerRight;}
 QColor QcHorizontalBar::getBgColor() const{return bgColor;}
 QColor QcHorizontalBar::getLineColor() const{return lineColor;}
 QColor QcHorizontalBar::getProgressColor() const{return progressColor;}
 
+void QcHorizontalBar::setDirection(DirectionEnum paintDirection) {direction=paintDirection;}
 void QcHorizontalBar::setCurrentValue(int value)
 {
     currentValue=value;
@@ -1282,200 +1416,8 @@ void QcHorizontalBar::setLongStep(int LongStep){longStep = LongStep;}
 void QcHorizontalBar::setShortStep(int ShortStep){shortStep= ShortStep;}
 void QcHorizontalBar::setRulerTop(bool RulerTop){rulerTop=RulerTop;}
 void QcHorizontalBar::setRulerBottom(bool RulerBottom){rulerBottom=RulerBottom;}
+void QcHorizontalBar::setRulerLeft(bool RulerLeft) {rulerLeft=RulerLeft;}
+void QcHorizontalBar::setRulerRight(bool RulerRight) {rulerRight=RulerRight;}
 void QcHorizontalBar::setBgColor(const QColor &BgColor){bgColor = BgColor;}
 void QcHorizontalBar::setLineColor(const QColor &LineColor){lineColor = LineColor;}
 void QcHorizontalBar::setProgressColor(const QColor &ProgressColor){progressColor = ProgressColor;}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-QcVerticalBarGauge::QcVerticalBarGauge(QWidget *parent): QWidget(parent) {}
-QcVerticalBarGauge::~QcVerticalBarGauge() {}
-void QcVerticalBarGauge::paintEvent(QPaintEvent *)
-{
-    // draw the preparation work, enable anti-aliasing
-    QPainter painter(this);
-    painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
-
-    // draw a gradient background
-    drawBg(&painter);
-    // draw progress
-    drawProgress(&painter);
-    // draw a ruler
-    if (_rulerLeft) drawRulerLeft(&painter);
-    if (_rulerRight) drawRulerRight(&painter);
-
-
-}
-void QcVerticalBarGauge::drawBg(QPainter *painter)
-{
-    painter->save();
-    painter->setPen(_lineColor);
-    painter->setBrush(_bgColor);
-    painter->drawRect(rect());
-    painter->restore();
-}
-void QcVerticalBarGauge::drawProgress(QPainter *painter)
-{
-    painter->save();
-    painter->setPen(Qt::NoPen);
-    painter->setBrush(_progressColor);
-
-    double length = height();
-    double increment = length / (_maxValue - _minValue);
-    double initX = (_currentValue - _minValue) * increment;
-    QRect rect(0, height()-initX, width(), initX);
-    painter->drawRect(rect);
-    painter->restore();
-}
-void QcVerticalBarGauge::drawRulerLeft(QPainter *painter)
-{
-    painter->save();
-    painter->setPen(_lineColor);
-
-    double x = 0;
-    double y = height();
-
-    QPointF lineTopLeftPot = QPointF(x, y);
-    QPointF lineBottomLeftPot = QPointF(x, y+height());
-    painter->drawLine(lineBottomLeftPot,lineTopLeftPot);
-
-    double length = height();
-    // Calculate how much each cell moves
-    double increment = length / (_maxValue - _minValue);
-    //Long line short line length
-    int longLineLen = 15;
-    int shortLineLen = 10;
-
-    //Draw scale value according to range value. Long line needs to move 10 pixels and short line needs to move 5 pixels.
-    for (int i = _minValue; i <= _maxValue; i = i + _shortStep) {
-        if (i % _longStep == 0) {
-            QPointF leftPoint = QPointF(x, y);
-            QPointF rightPoint = QPointF(x + longLineLen, y);
-            painter->drawLine(leftPoint, rightPoint);
-
-            // The first value and the last value do not draw
-            if (i == _minValue || i == _maxValue) {
-                y -= increment * _shortStep;
-                continue;
-            }
-
-            QString strValue = QString("%1").arg((double)i, 0, 'f', _precision);
-            double textWidth = fontMetrics().width(strValue);
-            double textHeight = fontMetrics().height();
-
-            //QPointF textPot = QPointF(x - textWidth / 2, y + textHeight + longLineLen);
-            QPointF textPot = QPointF(x + textWidth/3 +longLineLen , y +textHeight/4);
-
-            painter->drawText(textPot, strValue);
-        } else {
-            if (i % (_longStep / 2) == 0) {
-                shortLineLen = 10;
-            } else {
-                shortLineLen = 6;
-            }
-
-            QPointF leftP = QPointF(x, y);
-            QPointF rightP = QPointF(x+ shortLineLen, y );
-            painter->drawLine(leftP, rightP);
-        }
-
-        y -= increment * _shortStep;
-    }
-
-    painter->restore();
-}
-void QcVerticalBarGauge::drawRulerRight(QPainter *painter)
-{
-    painter->save();
-    painter->setPen(_lineColor);
-
-    double x = width();
-    double y = height();
-/*
-    QPointF lineTopRightPot = QPointF(x, y);
-    QPointF lineBottomRightPot = QPointF(x, height());
-    painter->drawLine(lineBottomRightPot, lineTopRightPot);
-*/
-
-    double length = height();
-    // Calculate how much each cell moves
-    double increment = length / (_maxValue - _minValue);
-    //Long line short line length
-    int longLineLen = 15;
-    int shortLineLen = 10;
-
-    //Draw scale value according to range value. Long line needs to move 10 pixels. Short line needs to move 5 pixels.
-    for (int i = _minValue; i <= _maxValue; i = i + _shortStep) {
-        if (i % _longStep == 0) {
-
-            QPointF leftPoint = QPointF(x - longLineLen, y);
-            QPointF rightPoint = QPointF(x, y);
-            painter->drawLine(rightPoint, leftPoint);
-
-            // The first value and the last value do not draw
-            if (i == _minValue || i == _maxValue) {
-                y -= increment * _shortStep;
-                continue;
-            }
-
-            QString strValue = QString("%1").arg((double)i, 0, 'f', _precision);
-            double textWidth = fontMetrics().width(strValue);
-            double textHeight = fontMetrics().height();
-
-            QPointF textPot = QPointF(x - longLineLen*2.5 - textWidth/2, y+ textHeight/4);
-
-            painter->drawText(textPot, strValue);
-        } else {
-            if (i % (_longStep / 2) == 0) {
-                shortLineLen = 10;
-            } else {
-                shortLineLen = 6;
-            }
-
-            QPointF leftP = QPointF(x - shortLineLen, y );
-            QPointF rightP = QPointF(x, y);
-            painter->drawLine(rightP,leftP);
-        }
-
-        y -= increment * _shortStep;
-    }
-
-    painter->restore();
-}
-void QcVerticalBarGauge::setCurrentValue(int value)
-{
-    _currentValue=value;
-    repaint();
-}
-double QcVerticalBarGauge::getMinValue() const{ return _minValue;}
-double QcVerticalBarGauge::getMaxValue() const{return _maxValue;}
-double QcVerticalBarGauge::getValue() const{ return _value;}
-double QcVerticalBarGauge::getAnimationStep() const{return _animationStep;}
-int QcVerticalBarGauge::getPrecision() const{return _precision;}
-int QcVerticalBarGauge::getLongStep() const{return _longStep;}
-int QcVerticalBarGauge::getShortStep() const{return _shortStep;}
-bool QcVerticalBarGauge::getRulerLeft() const{return _rulerLeft;}
-bool QcVerticalBarGauge::getRulerRight() const{return _rulerRight;}
-
-bool QcVerticalBarGauge::getAnimation() const{return _animation;}
-QColor QcVerticalBarGauge::getBgColor() const{return _bgColor;}
-QColor QcVerticalBarGauge::getLineColor() const{return _lineColor;}
-QColor QcVerticalBarGauge::getProgressColor() const{return _progressColor;}
-
-void QcVerticalBarGauge::setRange(double MinValue, double MaxValue){ _minValue = MinValue; _maxValue = MaxValue;}
-void QcVerticalBarGauge::setRange(int MinValue, int MaxValue){ _minValue = MinValue; _maxValue = MaxValue;}
-void QcVerticalBarGauge::setMinValue(double MinValue){ _minValue=MinValue; }
-void QcVerticalBarGauge::setMaxValue(double MaxValue){ _maxValue = MaxValue;}
-void QcVerticalBarGauge::setValue(double Value){ _value = Value;}
-void QcVerticalBarGauge::setValue(int Value){ _value = Value;}
-void QcVerticalBarGauge::setPrecision(int Precision){ _precision =Precision;}
-void QcVerticalBarGauge::setLongStep(int LongStep){ _longStep = LongStep;}
-void QcVerticalBarGauge::setShortStep(int ShortStep){ _shortStep= ShortStep;}
-void QcVerticalBarGauge::setRulerLeft(bool RulerLeft){ _rulerLeft=RulerLeft;}
-void QcVerticalBarGauge::setRulerRight(bool RulerRight){ _rulerRight=RulerRight;}
-
-void QcVerticalBarGauge::setAnimation(bool Animation){ _animation = Animation;}
-void QcVerticalBarGauge::setAnimationStep(double AnimationStep){ _animationStep = AnimationStep;}
-void QcVerticalBarGauge::setBgColor(const QColor &BgColor){ _bgColor = BgColor;}
-void QcVerticalBarGauge::setLineColor(const QColor &LineColor){ _lineColor = LineColor;}
-void QcVerticalBarGauge::setProgressColor(const QColor &ProgressColor){ _progressColor = ProgressColor;}
-
