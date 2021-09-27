@@ -6,7 +6,6 @@
 #define QCGAUGEWIDGET_BARGAUGE_H
 
 #include <qcgaugewidget.h>
-#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class BarGauge; }

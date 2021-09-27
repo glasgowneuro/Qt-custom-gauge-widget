@@ -2,9 +2,6 @@
 // Created by filippo on 24/09/21.
 //
 
-
-#include <QPainter>
-#include <QColorDialog>
 #include "bargauge.h"
 #include "ui_bargauge.h"
 
