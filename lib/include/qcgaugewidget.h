@@ -369,7 +369,6 @@ class QCGAUGE_DECL QcHorizontalBar : public QWidget {
     Q_OBJECT
 public:
     QcHorizontalBar(QWidget *parent = nullptr);
-
     ~QcHorizontalBar() override;
 protected:
     void paintEvent(QPaintEvent *);
@@ -383,7 +382,6 @@ private:
     double maxValue; //maximum
     double value; //target value
     int precision; //precision, a few decimal places
-
     int longStep; //long line equal division step
     int shortStep; //short line equal step size
     bool rulerTop; //the tick is above
@@ -395,9 +393,7 @@ private:
 
     bool reverse; //regression
     double currentValue; //current value
-/*
-private slots:
-    void valueChangeSlot(int value);*/
+
 public:
     double getMinValue()            const;
     double getMaxValue()            const;
@@ -413,10 +409,10 @@ public:
     QColor getLineColor()           const;
     QColor getProgressColor()       const;
 
-    QSize sizeHint()                const;
-    QSize minimumSizeHint()         const;
 
 public Q_SLOTS:
+    void setCurrentValue(int value);
+
     // Set the range value
     void setRange(double minValue, double maxValue);
     void setRange(int minValue, int maxValue);
@@ -424,10 +420,6 @@ public Q_SLOTS:
     // Set the maximum and minimum
     void setMinValue(double minValue);
     void setMaxValue(double maxValue);
-
-    // Set the target value
-    void setValue(double value);
-    void setValue(int value);
 
     // Set the accuracy
     void setPrecision(int precision);
@@ -445,15 +437,10 @@ public Q_SLOTS:
     void setLineColor(const QColor &lineColor);
     // Set the progress color
     void setProgressColor(const QColor &progressColor);
-
-//Q_SIGNALS:
-//    void valueChanged(double value);
-
 };
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
-
 
 class QCGAUGE_DECL QcVerticalBarGauge : public QWidget{
 
@@ -490,8 +477,6 @@ private:
 
     double _currentValue; //current value
 
-private slots:
-    void valueChangeSlot(int value);
 public:
     double getMinValue()            const;
     double getMaxValue()            const;
@@ -511,9 +496,6 @@ public:
     QColor getLineColor()           const;
     QColor getProgressColor()       const;
 
-    QSize sizeHint()                const;
-    QSize minimumSizeHint()         const;
-
 public Q_SLOTS:
     // Set the range value
     void setRange(double minValue, double maxValue);
@@ -524,8 +506,8 @@ public Q_SLOTS:
     void setMaxValue(double maxValue);
 
     // Set the target value
-    void setValue(double value);
-    void setValue(int value);
+    void setCurrentValue(int value);
+
 
     // Set the accuracy
     void setPrecision(int precision);

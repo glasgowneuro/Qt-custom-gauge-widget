@@ -871,25 +871,21 @@ QString QcValuesItem::font() {
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-QcAttitudeMeter::QcAttitudeMeter(QObject *parent) :
-    QcItem(parent)
+QcAttitudeMeter::QcAttitudeMeter(QObject *parent) : QcItem(parent)
 {
     mPitch = 0;
     mRoll = 0;
 }
-
 void QcAttitudeMeter::setCurrentPitch(float pitch)
 {
     mPitch=-pitch;
     update();
 }
-
 void QcAttitudeMeter::setCurrentRoll(float roll)
 {
     mRoll = roll;
     update();
 }
-
 QPointF QcAttitudeMeter::getIntersection(float r, const QPointF &pitchPoint, const QPointF &pt)
 {
     // refrence it to zero
@@ -899,7 +895,6 @@ QPointF QcAttitudeMeter::getIntersection(float r, const QPointF &pitchPoint, con
     float b = pt.y()-a*pt.x();
     return QPointF(0,a*0+b);
 }
-
 float QcAttitudeMeter::getStartAngle(const QRectF& tmpRect)
 {
     float r = getRadius(tmpRect);
@@ -920,7 +915,6 @@ float QcAttitudeMeter::getStartAngle(const QRectF& tmpRect)
     QPointF p = path1.intersected(path2).pointAtPercent(.5);
     return getAngle(p,tmpRect);
 }
-
 void QcAttitudeMeter::draw(QPainter *painter)
 {
     resetRect();
@@ -943,7 +937,6 @@ void QcAttitudeMeter::draw(QPainter *painter)
     drawDegrees(painter);
 
 }
-
 void QcAttitudeMeter::drawDegrees(QPainter *painter)
 {
     resetRect();
@@ -967,8 +960,6 @@ void QcAttitudeMeter::drawDegrees(QPainter *painter)
     drawDegree(painter,tmpRect,30);
     drawDegree(painter,tmpRect,150);
 }
-
-
 void QcAttitudeMeter::drawDegree(QPainter * painter, const QRectF& tmpRect,float deg)
 {
     QPointF pt1 = getPoint(deg,tmpRect);
@@ -979,8 +970,6 @@ void QcAttitudeMeter::drawDegree(QPainter * painter, const QRectF& tmpRect,float
     QPointF pt = path.pointAtPercent(0.1);
     painter->drawLine(pt1,pt);
 }
-
-
 void QcAttitudeMeter::drawUpperEllipse(QPainter *painter, const QRectF &tmpRect)
 {
 
@@ -1002,8 +991,6 @@ void QcAttitudeMeter::drawUpperEllipse(QPainter *painter, const QRectF &tmpRect)
     painter->drawChord(tmpRect,16*startAngle,16*span);
 
 }
-
-
 void QcAttitudeMeter::drawLowerEllipse(QPainter *painter, const QRectF &tmpRect)
 {
     QLinearGradient radialGrad2(tmpRect.topLeft(),tmpRect.bottomRight());
@@ -1022,7 +1009,6 @@ void QcAttitudeMeter::drawLowerEllipse(QPainter *painter, const QRectF &tmpRect)
     painter->drawChord(tmpRect,-16*startAngle,16*span);
 
 }
-
 void QcAttitudeMeter::drawPitchSteps(QPainter *painter, const QRectF &tmpRect)
 {
     float r = getRadius(tmpRect);
@@ -1063,7 +1049,6 @@ void QcAttitudeMeter::drawPitchSteps(QPainter *painter, const QRectF &tmpRect)
     }
     painter->restore();
 }
-
 void QcAttitudeMeter::drawHandle(QPainter *painter)
 {
     QRectF tmpRct = adjustRect(15);
@@ -1115,16 +1100,10 @@ void QcAttitudeMeter::drawHandle(QPainter *painter)
     painter->drawPolygon(trapPoly);
     painter->drawChord(tmpRct,-16*70,-16*40);
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+QcHorizontalBar::QcHorizontalBar(QWidget *parent): QWidget(parent) {}
 QcHorizontalBar::~QcHorizontalBar() {}
-
-/*void QcHorizontalBar::valueChangeSlot(int value)
-{
-    currentValue=value;
-    ui->_valueLabel->setText(QString::number(value)+ "%");
-    repaint();
-}*/
 void QcHorizontalBar::paintEvent(QPaintEvent *)
 {
     // draw the preparation work, enable anti-aliasing
@@ -1140,7 +1119,6 @@ void QcHorizontalBar::paintEvent(QPaintEvent *)
     if(rulerBottom) drawRulerBottom(&painter);
 
 }
-
 void QcHorizontalBar::drawBg(QPainter *painter)
 {
     painter->save();
@@ -1149,7 +1127,6 @@ void QcHorizontalBar::drawBg(QPainter *painter)
     painter->drawRect(rect());
     painter->restore();
 }
-
 void QcHorizontalBar::drawProgress(QPainter *painter)
 {
     painter->save();
@@ -1164,7 +1141,6 @@ void QcHorizontalBar::drawProgress(QPainter *painter)
     painter->drawRect(rect);
     painter->restore();
 }
-
 void QcHorizontalBar::drawRulerTop(QPainter *painter)
 {
     painter->save();
@@ -1222,7 +1198,6 @@ void QcHorizontalBar::drawRulerTop(QPainter *painter)
 
     painter->restore();
 }
-
 void QcHorizontalBar::drawRulerBottom(QPainter *painter)
 {
     painter->save();
@@ -1289,20 +1264,19 @@ int QcHorizontalBar::getLongStep() const{return longStep;}
 int QcHorizontalBar::getShortStep() const{return shortStep;}
 bool QcHorizontalBar::getRulerTop() const{return rulerTop;}
 bool QcHorizontalBar::getRulerBottom() const{return rulerBottom;}
-
 QColor QcHorizontalBar::getBgColor() const{return bgColor;}
 QColor QcHorizontalBar::getLineColor() const{return lineColor;}
 QColor QcHorizontalBar::getProgressColor() const{return progressColor;}
-QSize QcHorizontalBar::sizeHint() const{return minimumSize();}
-QSize QcHorizontalBar::minimumSizeHint() const{return minimumSizeHint();}
 
-
+void QcHorizontalBar::setCurrentValue(int value)
+{
+    currentValue=value;
+    repaint();
+}
 void QcHorizontalBar::setRange(double MinValue, double MaxValue){minValue = MinValue; maxValue = MaxValue;}
 void QcHorizontalBar::setRange(int MinValue, int MaxValue){ minValue = MinValue; maxValue = MaxValue;}
 void QcHorizontalBar::setMinValue(double MinValue){ minValue=MinValue; }
 void QcHorizontalBar::setMaxValue(double MaxValue){ maxValue = MaxValue;}
-void QcHorizontalBar::setValue(double Value){value = Value;}
-void QcHorizontalBar::setValue(int Value){value = Value;}
 void QcHorizontalBar::setPrecision(int Precision){precision =Precision;}
 void QcHorizontalBar::setLongStep(int LongStep){longStep = LongStep;}
 void QcHorizontalBar::setShortStep(int ShortStep){shortStep= ShortStep;}
@@ -1312,7 +1286,9 @@ void QcHorizontalBar::setBgColor(const QColor &BgColor){bgColor = BgColor;}
 void QcHorizontalBar::setLineColor(const QColor &LineColor){lineColor = LineColor;}
 void QcHorizontalBar::setProgressColor(const QColor &ProgressColor){progressColor = ProgressColor;}
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+QcVerticalBarGauge::QcVerticalBarGauge(QWidget *parent): QWidget(parent) {}
+QcVerticalBarGauge::~QcVerticalBarGauge() {}
 void QcVerticalBarGauge::paintEvent(QPaintEvent *)
 {
     // draw the preparation work, enable anti-aliasing
@@ -1329,7 +1305,6 @@ void QcVerticalBarGauge::paintEvent(QPaintEvent *)
 
 
 }
-
 void QcVerticalBarGauge::drawBg(QPainter *painter)
 {
     painter->save();
@@ -1338,7 +1313,6 @@ void QcVerticalBarGauge::drawBg(QPainter *painter)
     painter->drawRect(rect());
     painter->restore();
 }
-
 void QcVerticalBarGauge::drawProgress(QPainter *painter)
 {
     painter->save();
@@ -1352,7 +1326,6 @@ void QcVerticalBarGauge::drawProgress(QPainter *painter)
     painter->drawRect(rect);
     painter->restore();
 }
-
 void QcVerticalBarGauge::drawRulerLeft(QPainter *painter)
 {
     painter->save();
@@ -1410,7 +1383,6 @@ void QcVerticalBarGauge::drawRulerLeft(QPainter *painter)
 
     painter->restore();
 }
-
 void QcVerticalBarGauge::drawRulerRight(QPainter *painter)
 {
     painter->save();
@@ -1469,7 +1441,11 @@ void QcVerticalBarGauge::drawRulerRight(QPainter *painter)
 
     painter->restore();
 }
-
+void QcVerticalBarGauge::setCurrentValue(int value)
+{
+    _currentValue=value;
+    repaint();
+}
 double QcVerticalBarGauge::getMinValue() const{ return _minValue;}
 double QcVerticalBarGauge::getMaxValue() const{return _maxValue;}
 double QcVerticalBarGauge::getValue() const{ return _value;}
@@ -1480,14 +1456,10 @@ int QcVerticalBarGauge::getShortStep() const{return _shortStep;}
 bool QcVerticalBarGauge::getRulerLeft() const{return _rulerLeft;}
 bool QcVerticalBarGauge::getRulerRight() const{return _rulerRight;}
 
-
 bool QcVerticalBarGauge::getAnimation() const{return _animation;}
 QColor QcVerticalBarGauge::getBgColor() const{return _bgColor;}
 QColor QcVerticalBarGauge::getLineColor() const{return _lineColor;}
 QColor QcVerticalBarGauge::getProgressColor() const{return _progressColor;}
-QSize QcVerticalBarGauge::sizeHint() const{return minimumSize();}
-QSize QcVerticalBarGauge::minimumSizeHint() const{return minimumSizeHint();}
-
 
 void QcVerticalBarGauge::setRange(double MinValue, double MaxValue){ _minValue = MinValue; _maxValue = MaxValue;}
 void QcVerticalBarGauge::setRange(int MinValue, int MaxValue){ _minValue = MinValue; _maxValue = MaxValue;}
