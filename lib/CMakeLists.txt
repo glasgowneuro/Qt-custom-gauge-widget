@@ -21,7 +21,7 @@ target_include_directories(qcgaugewidget
 
 target_compile_definitions(qcgaugewidget
         PRIVATE
-        QGV_EXPORT
+        QCGAUGE_COMPILE_LIBRARY
         )
 
 target_link_libraries(qcgaugewidget
