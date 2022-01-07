@@ -43,6 +43,9 @@ When the solution is correctly loaded, do the following to build its projects:
 - WindGauge  
 ![WindGauge](/ReadMeImages/WindGauge.png)  
 
+### Class Diagram
+![ClassDiagram](/ReadMeImages/Package1.png)  
+
 ### Links
 This is a release for testing, the code needs more work on it, as I am willing to add more improvements.
 Read more at: https://github.com/Berrima/Qt-custom-gauge-widget
