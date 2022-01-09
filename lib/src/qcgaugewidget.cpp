@@ -1404,8 +1404,10 @@ QColor QcBar::getProgressColor() const{return progressColor;}
 void QcBar::setDirection(DirectionEnum paintDirection) { direction=paintDirection;}
 void QcBar::setCurrentValue(int value)
 {
-    if(value<minValue || value>maxValue)
-        return;
+    if(value<minValue)
+        currentValue=minValue;
+    else if(value>maxValue)
+        currentValue= maxValue;
     else
         currentValue=value;
     repaint();
