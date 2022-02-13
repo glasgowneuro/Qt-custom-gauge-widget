@@ -26,10 +26,6 @@ When the solution is correctly loaded, do the following to build its projects:
 ![BarGauge](/ReadMeImages/BarGauge.png)  
 - Basic  
 ![Basic](/ReadMeImages/BasicGauge.png)  
-- Button  
-![Button](/ReadMeImages/Button.png)  
-- CircularBar  
-![CircularBar](/ReadMeImages/circularbar.png)  
 - Compass  
 ![Compass](/ReadMeImages/Compass.png)  
 - DoubleNeedle  
@@ -38,22 +34,17 @@ When the solution is correctly loaded, do the following to build its projects:
 ![FuelGauge](/ReadMeImages/FuelGauge.png)  
 - LcdGauge  
 ![LcdGauge](/ReadMeImages/lcdGauge.png)  
-- ProgressGauge  
-![ProgressGauge](/ReadMeImages/ProgressGauge.png)  
 - RollGauge  
 ![RollGauge](/ReadMeImages/RollGauge.png)  
 - SpeedGauge  
 ![SpeedGauge](/ReadMeImages/SpeedGauge.png)  
-- SwitchWidget  
-![SwitchWidget](/ReadMeImages/SwitchWidget.png)  
-- ToggleButton  
-![ToggleButton](/ReadMeImages/ToggleBotton.png)  
-- ToggleSwitch  
-![ToggleSwitch](/ReadMeImages/ToggleSwitch.png)  
-- VerticalBarGauge  
-![VerticalBarGauge](/ReadMeImages/Vertical.png)  
+- QcVerticalBarGauge  
+![QcVerticalBarGauge](/ReadMeImages/Vertical.png)  
 - WindGauge  
 ![WindGauge](/ReadMeImages/WindGauge.png)  
+
+### Class Diagram
+![ClassDiagram](/ReadMeImages/Package1.png)  
 
 ### Links
 This is a release for testing, the code needs more work on it, as I am willing to add more improvements.

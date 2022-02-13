@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>500</width>
     <height>145</height>
    </rect>
   </property>
@@ -18,22 +18,22 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QLabel" name="_valueLabel">
-     <property name="text">
-      <string>0</string>
-     </property>
-     <property name="textFormat">
-      <enum>Qt::MarkdownText</enum>
+    <widget class="QSlider" name="verticalSlider">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QSlider" name="verticalSlider">
-     <property name="maximum">
-      <number>100</number>
+    <widget class="QLabel" name="_valueLabel">
+     <property name="maximumSize">
+      <size>
+       <width>50</width>
+       <height>16777215</height>
+      </size>
      </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+     <property name="text">
+      <string>%</string>
      </property>
     </widget>
    </item>

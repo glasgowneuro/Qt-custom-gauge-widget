@@ -13,9 +13,9 @@ find_package(Qt5 REQUIRED COMPONENTS
 
 add_executable(VerticalBarGauge-example
         main.cpp
-        VerticaBarGauge.cpp
-        VerticaBarGauge.h
         verticalbargauge.ui
+        verticalbargauge.h
+        verticalbargauge.cpp
         )
 
 target_link_libraries(VerticalBarGauge-example
@@ -23,4 +23,5 @@ target_link_libraries(VerticalBarGauge-example
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
+        QcGaugeWidget
         )

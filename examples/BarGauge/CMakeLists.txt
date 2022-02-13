@@ -13,8 +13,8 @@ find_package(Qt5 REQUIRED COMPONENTS
 
 add_executable(BarGauge-example
         main.cpp
-        bargauge.h
         bargauge.ui
+        bargauge.h
         bargauge.cpp
         )
 
@@ -23,4 +23,5 @@ target_link_libraries(BarGauge-example
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
+        QcGaugeWidget
         )

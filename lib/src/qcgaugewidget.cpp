@@ -29,6 +29,7 @@
 
 
 #include <QStyleOption>
+#include <search.h>
 #include "qcgaugewidget.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -871,25 +872,21 @@ QString QcValuesItem::font() {
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-QcAttitudeMeter::QcAttitudeMeter(QObject *parent) :
-    QcItem(parent)
+QcAttitudeMeter::QcAttitudeMeter(QObject *parent) : QcItem(parent)
 {
     mPitch = 0;
     mRoll = 0;
 }
-
 void QcAttitudeMeter::setCurrentPitch(float pitch)
 {
     mPitch=-pitch;
     update();
 }
-
 void QcAttitudeMeter::setCurrentRoll(float roll)
 {
     mRoll = roll;
     update();
 }
-
 QPointF QcAttitudeMeter::getIntersection(float r, const QPointF &pitchPoint, const QPointF &pt)
 {
     // refrence it to zero
@@ -899,7 +896,6 @@ QPointF QcAttitudeMeter::getIntersection(float r, const QPointF &pitchPoint, con
     float b = pt.y()-a*pt.x();
     return QPointF(0,a*0+b);
 }
-
 float QcAttitudeMeter::getStartAngle(const QRectF& tmpRect)
 {
     float r = getRadius(tmpRect);
@@ -920,7 +916,6 @@ float QcAttitudeMeter::getStartAngle(const QRectF& tmpRect)
     QPointF p = path1.intersected(path2).pointAtPercent(.5);
     return getAngle(p,tmpRect);
 }
-
 void QcAttitudeMeter::draw(QPainter *painter)
 {
     resetRect();
@@ -943,7 +938,6 @@ void QcAttitudeMeter::draw(QPainter *painter)
     drawDegrees(painter);
 
 }
-
 void QcAttitudeMeter::drawDegrees(QPainter *painter)
 {
     resetRect();
@@ -967,8 +961,6 @@ void QcAttitudeMeter::drawDegrees(QPainter *painter)
     drawDegree(painter,tmpRect,30);
     drawDegree(painter,tmpRect,150);
 }
-
-
 void QcAttitudeMeter::drawDegree(QPainter * painter, const QRectF& tmpRect,float deg)
 {
     QPointF pt1 = getPoint(deg,tmpRect);
@@ -979,8 +971,6 @@ void QcAttitudeMeter::drawDegree(QPainter * painter, const QRectF& tmpRect,float
     QPointF pt = path.pointAtPercent(0.1);
     painter->drawLine(pt1,pt);
 }
-
-
 void QcAttitudeMeter::drawUpperEllipse(QPainter *painter, const QRectF &tmpRect)
 {
 
@@ -1002,8 +992,6 @@ void QcAttitudeMeter::drawUpperEllipse(QPainter *painter, const QRectF &tmpRect)
     painter->drawChord(tmpRect,16*startAngle,16*span);
 
 }
-
-
 void QcAttitudeMeter::drawLowerEllipse(QPainter *painter, const QRectF &tmpRect)
 {
     QLinearGradient radialGrad2(tmpRect.topLeft(),tmpRect.bottomRight());
@@ -1022,7 +1010,6 @@ void QcAttitudeMeter::drawLowerEllipse(QPainter *painter, const QRectF &tmpRect)
     painter->drawChord(tmpRect,-16*startAngle,16*span);
 
 }
-
 void QcAttitudeMeter::drawPitchSteps(QPainter *painter, const QRectF &tmpRect)
 {
     float r = getRadius(tmpRect);
@@ -1063,7 +1050,6 @@ void QcAttitudeMeter::drawPitchSteps(QPainter *painter, const QRectF &tmpRect)
     }
     painter->restore();
 }
-
 void QcAttitudeMeter::drawHandle(QPainter *painter)
 {
     QRectF tmpRct = adjustRect(15);
@@ -1115,4 +1101,328 @@ void QcAttitudeMeter::drawHandle(QPainter *painter)
     painter->drawPolygon(trapPoly);
     painter->drawChord(tmpRct,-16*70,-16*40);
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+QcBar::QcBar(QWidget *parent): QWidget(parent) {}
+QcBar::~QcBar() {}
+void QcBar::paintEvent(QPaintEvent *)
+{
+    // draw the preparation work, enable anti-aliasing
+    QPainter painter(this);
+    painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
+
+    // draw a gradient background
+    drawBg(&painter);
+    // draw progress
+    drawProgress(&painter);
+
+    if(direction==DirectionEnum::Horizontal) {
+        // draw a ruler
+        if (rulerTop) drawRulerTop(&painter);
+        if (rulerBottom) drawRulerBottom(&painter);
+    }
+    else
+    {
+        // draw a ruler
+        if (rulerRight) drawRulerRight(&painter);
+        if (rulerLeft) drawRulerLeft(&painter);
+    }
+
+}
+void QcBar::drawBg(QPainter *painter)
+{
+    painter->save();
+    painter->setPen(lineColor);
+    painter->setBrush(bgColor);
+    painter->drawRect(rect());
+    painter->restore();
+}
+void QcBar::drawProgress(QPainter *painter)
+{
+    painter->save();
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(progressColor);
+
+    if(direction==DirectionEnum::Horizontal) {
+        double length = width();
+        double increment = length / (maxValue - minValue);
+        double initX = (currentValue - minValue) * increment;
+
+        QRect rect(0, 0, initX, height());
+        painter->drawRect(rect);
+    }
+    else
+    {
+        double length = height();
+        double increment = length / (maxValue - minValue);
+        double initX = (currentValue - minValue) * increment;
+        QRect rect(0, height()-initX, width(), initX);
+        painter->drawRect(rect);
+    }
+    painter->restore();
+}
+void QcBar::drawRulerTop(QPainter *painter)
+{
+    painter->save();
+    painter->setPen(lineColor);
+
+    double initX = 0;
+
+    // draw a part of the bottom line on the horizontal ruler
+    double initTopY = 0;
+    QPointF lineTopLeftPot = QPointF(initX, initTopY);
+    QPointF lineTopRightPot = QPointF(width() - initX, initTopY);
+    painter->drawLine(lineTopLeftPot, lineTopRightPot);
+
+    // draw the upper part and the lower part of the horizontal ruler scale
+    double length = width();
+    // Calculate how much each cell moves
+    double increment = length / (maxValue - minValue);
+    //Long line short line length
+    int longLineLen = 15;
+    int shortLineLen = 10;
+
+    //Draw scale value and scale value according to range value. Long line needs to move 10 pixels. Short line needs to move 5 pixels.
+    for (int i = minValue; i <= maxValue; i = i + shortStep) {
+        if (i % longStep == 0) {
+            QPointF topPot = QPointF(initX, initTopY);
+            QPointF bottomPot = QPointF(initX, initTopY + longLineLen);
+            painter->drawLine(topPot, bottomPot);
+
+            // The first value and the last value do not draw
+            if (i == minValue || i == maxValue) {
+                initX += increment * shortStep;
+                continue;
+            }
+
+            QString strValue = QString("%1").arg((double)i, 0, 'f', precision);
+            double textWidth = fontMetrics().width(strValue);
+            double textHeight = fontMetrics().height();
+
+            QPointF textPot = QPointF(initX - textWidth / 2, initTopY + textHeight + longLineLen);
+            painter->drawText(textPot, strValue);
+        } else {
+            if (i % (longStep / 2) == 0) {
+                shortLineLen = 10;
+            } else {
+                shortLineLen = 6;
+            }
+
+            QPointF topPot = QPointF(initX, initTopY);
+            QPointF bottomPot = QPointF(initX, initTopY + shortLineLen);
+            painter->drawLine(topPot, bottomPot);
+        }
+
+        initX += increment * shortStep;
+    }
+
+    painter->restore();
+}
+void QcBar::drawRulerBottom(QPainter *painter)
+{
+    painter->save();
+    painter->setPen(lineColor);
+
+    double initX = 0;
+
+    // draw the bottom line of the lower part of the horizontal ruler
+    double initBottomY = height();
+    QPointF lineBottomLeftPot = QPointF(initX, initBottomY);
+    QPointF lineBottomRightPot = QPointF(width() - initX, initBottomY);
+    painter->drawLine(lineBottomLeftPot, lineBottomRightPot);
+
+    // draw the upper part and the lower part of the horizontal ruler scale
+    double length = width();
+    // Calculate how much each cell moves
+    double increment = length / (maxValue - minValue);
+    //Long line short line length
+    int longLineLen = 15;
+    int shortLineLen = 10;
+
+    //Draw scale value and scale value according to range value. Long line needs to move 10 pixels. Short line needs to move 5 pixels.
+    for (int i = minValue; i <= maxValue; i = i + shortStep) {
+        if (i % longStep == 0) {
+            QPointF topPot = QPointF(initX, initBottomY);
+            QPointF bottomPot = QPointF(initX, initBottomY - longLineLen);
+            painter->drawLine(topPot, bottomPot);
+
+            // The first value and the last value do not draw
+            if (i == minValue || i == maxValue) {
+                initX += increment * shortStep;
+                continue;
+            }
+
+            QString strValue = QString("%1").arg((double)i, 0, 'f', precision);
+            double textWidth = fontMetrics().width(strValue);
+            double textHeight = fontMetrics().height();
+
+            QPointF textPot = QPointF(initX - textWidth / 2, initBottomY - textHeight / 2 - longLineLen);
+            painter->drawText(textPot, strValue);
+        } else {
+            if (i % (longStep / 2) == 0) {
+                shortLineLen = 10;
+            } else {
+                shortLineLen = 6;
+            }
+
+            QPointF topPot = QPointF(initX, initBottomY);
+            QPointF bottomPot = QPointF(initX, initBottomY - shortLineLen);
+            painter->drawLine(topPot, bottomPot);
+        }
+
+        initX += increment * shortStep;
+    }
+
+    painter->restore();
+}
+void QcBar::drawRulerLeft(QPainter *painter)
+{
+    painter->save();
+    painter->setPen(lineColor);
+
+    double x = 0;
+    double y = height();
+
+    QPointF lineTopLeftPot = QPointF(x, y);
+    QPointF lineBottomLeftPot = QPointF(x, y+height());
+    painter->drawLine(lineBottomLeftPot,lineTopLeftPot);
+
+    double length = height();
+    // Calculate how much each cell moves
+    double increment = length / (maxValue - minValue);
+    //Long line short line length
+    int longLineLen = 15;
+    int shortLineLen = 10;
+
+    //Draw scale value according to range value. Long line needs to move 10 pixels and short line needs to move 5 pixels.
+    for (int i = minValue; i <= maxValue; i = i + shortStep) {
+        if (i % longStep == 0) {
+            QPointF leftPoint = QPointF(x, y);
+            QPointF rightPoint = QPointF(x + longLineLen, y);
+            painter->drawLine(leftPoint, rightPoint);
+
+            // The first value and the last value do not draw
+            if (i == minValue || i == maxValue) {
+                y -= increment * shortStep;
+                continue;
+            }
+
+            QString strValue = QString("%1").arg((double)i, 0, 'f', precision);
+            double textWidth = fontMetrics().width(strValue);
+            double textHeight = fontMetrics().height();
+
+            //QPointF textPot = QPointF(x - textWidth / 2, y + textHeight + longLineLen);
+            QPointF textPot = QPointF(x + textWidth/3 +longLineLen , y +textHeight/4);
+
+            painter->drawText(textPot, strValue);
+        } else {
+            if (i % (longStep / 2) == 0) {
+                shortLineLen = 10;
+            } else {
+                shortLineLen = 6;
+            }
+
+            QPointF leftP = QPointF(x, y);
+            QPointF rightP = QPointF(x+ shortLineLen, y );
+            painter->drawLine(leftP, rightP);
+        }
+
+        y -= increment * shortStep;
+    }
+
+    painter->restore();
+}
+void QcBar::drawRulerRight(QPainter *painter)
+{
+    painter->save();
+    painter->setPen(lineColor);
+
+    double x = width();
+    double y = height();
+
+    double length = height();
+    // Calculate how much each cell moves
+    double increment = length / (maxValue - minValue);
+    //Long line short line length
+    int longLineLen = 15;
+    int shortLineLen = 10;
+
+    //Draw scale value according to range value. Long line needs to move 10 pixels. Short line needs to move 5 pixels.
+    for (int i = minValue; i <= maxValue; i = i + shortStep) {
+        if (i % longStep == 0) {
+
+            QPointF leftPoint = QPointF(x - longLineLen, y);
+            QPointF rightPoint = QPointF(x, y);
+            painter->drawLine(rightPoint, leftPoint);
+
+            // The first value and the last value do not draw
+            if (i == minValue || i == maxValue) {
+                y -= increment * shortStep;
+                continue;
+            }
+
+            QString strValue = QString("%1").arg((double)i, 0, 'f', precision);
+            double textWidth = fontMetrics().width(strValue);
+            double textHeight = fontMetrics().height();
+
+            QPointF textPot = QPointF(x - longLineLen*2.5 - textWidth/2, y+ textHeight/4);
+
+            painter->drawText(textPot, strValue);
+        } else {
+            if (i % (longStep / 2) == 0) {
+                shortLineLen = 10;
+            } else {
+                shortLineLen = 6;
+            }
+
+            QPointF leftP = QPointF(x - shortLineLen, y );
+            QPointF rightP = QPointF(x, y);
+            painter->drawLine(rightP,leftP);
+        }
+
+        y -= increment * shortStep;
+    }
+
+    painter->restore();
+}
+
+QcBar::DirectionEnum QcBar::getDirection() const {return direction;}
+double QcBar::getMinValue() const{ return minValue;}
+double QcBar::getMaxValue() const{return maxValue;}
+double QcBar::getValue() const{ return value;}
+int QcBar::getPrecision() const{return precision;}
+int QcBar::getLongStep() const{return longStep;}
+int QcBar::getShortStep() const{return shortStep;}
+bool QcBar::getRulerTop() const{return rulerTop;}
+bool QcBar::getRulerBottom() const{return rulerBottom;}
+bool QcBar::getRulerLeft() const{return rulerLeft;}
+bool QcBar::getRulerRight() const{return rulerRight;}
+QColor QcBar::getBgColor() const{return bgColor;}
+QColor QcBar::getLineColor() const{return lineColor;}
+QColor QcBar::getProgressColor() const{return progressColor;}
+
+void QcBar::setDirection(DirectionEnum paintDirection) { direction=paintDirection;}
+void QcBar::setCurrentValue(int value)
+{
+    if(value<minValue)
+        currentValue=minValue;
+    else if(value>maxValue)
+        currentValue= maxValue;
+    else
+        currentValue=value;
+    repaint();
+}
+void QcBar::setRange(double MinValue, double MaxValue){ minValue = MinValue; maxValue = MaxValue;}
+void QcBar::setRange(int MinValue, int MaxValue){ minValue = MinValue; maxValue = MaxValue;}
+void QcBar::setMinValue(double MinValue){ minValue=MinValue; }
+void QcBar::setMaxValue(double MaxValue){ maxValue = MaxValue;}
+void QcBar::setPrecision(int Precision){ precision =Precision;}
+void QcBar::setLongStep(int LongStep){ longStep = LongStep;}
+void QcBar::setShortStep(int ShortStep){ shortStep= ShortStep;}
+void QcBar::setRulerTop(bool RulerTop){ rulerTop=RulerTop;}
+void QcBar::setRulerBottom(bool RulerBottom){ rulerBottom=RulerBottom;}
+void QcBar::setRulerLeft(bool RulerLeft) { rulerLeft=RulerLeft;}
+void QcBar::setRulerRight(bool RulerRight) { rulerRight=RulerRight;}
+void QcBar::setBgColor(const QColor &BgColor){ bgColor = BgColor;}
+void QcBar::setLineColor(const QColor &LineColor){ lineColor = LineColor;}
+void QcBar::setProgressColor(const QColor &ProgressColor){ progressColor = ProgressColor;}

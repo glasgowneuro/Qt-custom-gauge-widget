@@ -2,14 +2,13 @@
 // Created by filippo on 17/08/21.
 //
 
-#include "VerticaBarGauge.h"
 #include <QApplication>
+#include "verticalbargauge.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    VerticalBarGauge w;
-    w.show();
-
+    verticalbargauge* v= new verticalbargauge(0);
+    v->show();
     return a.exec();
 }
